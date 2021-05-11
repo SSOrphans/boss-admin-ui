@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import Loans from "./app/loans/Loans";
 import {
 	BrowserRouter as Router,
 	Switch,
@@ -16,10 +17,7 @@ function App() {
 						path='/home'
 						render={() => <h1>boss-admin-ui home</h1>}
 					/>
-					<Route
-						path='/loans'
-						render={() => <h1>boss-admin-ui loan</h1>}
-					/>
+					<Route path='/loans' render={() => <Loans />} />
 					<Redirect to='/home' />
 				</Switch>
 			</Router>
