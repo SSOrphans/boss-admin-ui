@@ -1,8 +1,18 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getCardDetail } from "../../services/cardService";
 
 export const CardDetail = () => {
-  const [card] = useSelector((state) => state.cardDetail);
+  const currentState = useSelector((state) => state.cardDetail);
+  const dispatch = useDispatch();
+
+  const [card] = currentState.cards;
+
+  useEffect(() => {
+    if(currentState.status === "init"){
+      dispatch(getCardDetail(2));
+    }
+  });
 
   return (
     <div style={{ margin: "25px" }}>
@@ -17,7 +27,7 @@ export const CardDetail = () => {
       <p>Card isConfirmed: {card.confirmed.toString()}</p>
       <p>Card isActive: {card.active.toString()}</p>
       <p>Card isStolen: {card.stolen.toString()}</p>
-      <p>Card CardType: {card.cardType.name}</p>
+      <p>Card CardType: {card.cardType}</p>
     </div>
   );
 };
