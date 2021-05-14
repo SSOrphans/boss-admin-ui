@@ -1,31 +1,23 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { test } from "../slicers/cardSlice";
+import { useSelector } from "react-redux";
 
 export const CardDetail = () => {
-  const cardDetail = useSelector((state) => state.card);
-
-  const dispatch = useDispatch();
-
-  const testBtn = () => {
-    dispatch(test("hi world!"));
-  };
+  const [card] = useSelector((state) => state.cardDetail);
 
   return (
-    <div>
-      <p>{cardDetail.something}</p>
-      <button type="button" onClick={testBtn}>
-        click me!
-      </button>
+    <div style={{ margin: "25px" }}>
+      <p>Card ID: {card.id}</p>
+      <p>Card NumberHash: {card.numberHash}</p>
+      <p>Card AccountID: {card.accountId}</p>
+      <p>Card Created: {card.created}</p>
+      <p>Card ActiveSince: {card.activeSince}</p>
+      <p>Card ExpirationDate: {card.expirationDate}</p>
+      <p>Card PIN: {card.pin}</p>
+      <p>Card CVV: {card.cvv}</p>
+      <p>Card isConfirmed: {card.confirmed.toString()}</p>
+      <p>Card isActive: {card.active.toString()}</p>
+      <p>Card isStolen: {card.stolen.toString()}</p>
+      <p>Card CardType: {card.cardType.name}</p>
     </div>
   );
-
-  // const renderCard = cardDetail.map(detail => (
-  //   <div>
-  //     <p>{detail.something}</p>
-  //     <button type="button" onClick={testBtn}>click me!</button>
-  //   </div>
-  // ));
-
-  // return <div>{renderCard}</div>;
 };

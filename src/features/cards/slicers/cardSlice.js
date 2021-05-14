@@ -1,17 +1,35 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { something: "hello world!" };
+const initialState = [
+  {
+    id: 0,
+    numberHash: 0,
+    accountId: 0,
+    created: "_",
+    activeSince: "_",
+    expirationDate: "_",
+    pin: 0,
+    cvv: 0,
+    confirmed: false,
+    active: false,
+    stolen: false,
+    cardType: { name: "_" },
+  },
+];
 
 export const cardSlice = createSlice({
-  name: "card",
+  name: "cardDetails",
   initialState,
   reducers: {
-    test(state, action) {
-      state.something = action.payload
+    updateCard(state, action) {
+      if (state.length > 5) {
+        state.pop();
+      }
+      state.unshift(action.payload);
     },
   },
 });
 
-export const { test } = cardSlice.actions;
+export const { updateCard } = cardSlice.actions;
 
 export default cardSlice.reducer;
