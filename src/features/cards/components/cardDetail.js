@@ -3,16 +3,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCardDetail } from "../../services/cardService";
 import Table from "react-bootstrap/Table";
 import Jumbotron from "react-bootstrap/Jumbotron";
+import { useParams } from "react-router";
 
 export const CardDetail = () => {
   const currentState = useSelector((state) => state.cardDetail);
   const dispatch = useDispatch();
-
   const [card] = currentState.cards;
+  const {id} = useParams();
 
   useEffect(() => {
     if (currentState.status === "init") {
-      dispatch(getCardDetail(1));
+      dispatch(getCardDetail(id));
     }
   });
 
