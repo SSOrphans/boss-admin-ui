@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getCardDetail } from "../../services/cardService";
+import Table from "react-bootstrap/Table";
+import Jumbotron from "react-bootstrap/Jumbotron";
 
 export const CardDetail = () => {
   const currentState = useSelector((state) => state.cardDetail);
@@ -9,25 +11,39 @@ export const CardDetail = () => {
   const [card] = currentState.cards;
 
   useEffect(() => {
-    if(currentState.status === "init"){
-      dispatch(getCardDetail(2));
+    if (currentState.status === "init") {
+      dispatch(getCardDetail(1));
     }
   });
 
+  const renderDetails = Object.entries(card).map(([key, value]) => (
+    <td key={key}>{value.toString()}</td>
+  ));
+
   return (
-    <div style={{ margin: "25px" }}>
-      <p>Card ID: {card.id}</p>
-      <p>Card NumberHash: {card.numberHash}</p>
-      <p>Card AccountID: {card.accountId}</p>
-      <p>Card Created: {card.created}</p>
-      <p>Card ActiveSince: {card.activeSince}</p>
-      <p>Card ExpirationDate: {card.expirationDate}</p>
-      <p>Card PIN: {card.pin}</p>
-      <p>Card CVV: {card.cvv}</p>
-      <p>Card isConfirmed: {card.confirmed.toString()}</p>
-      <p>Card isActive: {card.active.toString()}</p>
-      <p>Card isStolen: {card.stolen.toString()}</p>
-      <p>Card CardType: {card.cardType}</p>
-    </div>
+    <Jumbotron className="p-3">
+      <h4 className="pb-3">Card Details</h4>
+      <Table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Number Hash</th>
+            <th>Account ID</th>
+            <th>Created</th>
+            <th>Active Since</th>
+            <th>Expiration Date</th>
+            <th>PIN</th>
+            <th>CVV</th>
+            <th>Confirmed</th>
+            <th>Active</th>
+            <th>Stolen</th>
+            <th>Card Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>{renderDetails}</tr>
+        </tbody>
+      </Table>
+    </Jumbotron>
   );
 };

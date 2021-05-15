@@ -7,15 +7,15 @@ const initialState = {
       id: 0,
       numberHash: 0,
       accountId: 0,
-      created: "",
-      activeSince: "",
-      expirationDate: "",
+      created: "-",
+      activeSince: "-",
+      expirationDate: "-",
       pin: 0,
       cvv: 0,
       confirmed: false,
       active: false,
       stolen: false,
-      cardType: "",
+      cardType: "-",
     },
   ],
   status: "init",
@@ -27,15 +27,13 @@ export const cardSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [getCardDetail.pending]: (state, action) => {
-      console.log(action);
-    },
     [getCardDetail.fulfilled]: (state, action) => {
-      console.log(action.payload);
-      if (state.length > 5) {
-        state.pop();
-      }
-      state.cards.unshift(action.payload);
+      let payload = action.payload;
+      payload.created = new Date(payload.created).toLocaleDateString()
+      payload.activeSince = new Date(payload.activeSince).toLocaleDateString()
+      payload.expirationDate = new Date(payload.expirationDate).toLocaleDateString()
+
+      state.cards.unshift(payload);
       state.status = "idle";
     },
     [getCardDetail.rejected]: (state, action) => {

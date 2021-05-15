@@ -7,11 +7,12 @@ import {
   Redirect,
 } from "react-router-dom";
 
+import "bootstrap/dist/css/bootstrap.min.css";
 import { CardDetail } from "./features/cards/components/cardDetail";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App m-5">
       <Router>
         <Switch>
           <Route path="/home" render={() => <h1>boss-admin-ui home</h1>} />
