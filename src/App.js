@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import Loans from "./app/loans/Loans";
+import Loans from "./app/features/loans/component/Loans";
 import {
 	BrowserRouter as Router,
 	Switch,
