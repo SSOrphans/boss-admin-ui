@@ -6,6 +6,7 @@ export default function PaginationComponent({
 	currentPage = 0,
 	maxSize = 5,
 	onPageChanged,
+	style,
 }) {
 	let pages = [];
 	if (currentPage - Math.floor(maxSize / 2) < 0) {
@@ -32,7 +33,7 @@ export default function PaginationComponent({
 	}
 
 	return (
-		<Pagination>
+		<Pagination style={style}>
 			<PaginationItem disabled={currentPage <= 0}>
 				<PaginationLink
 					first
