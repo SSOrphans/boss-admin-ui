@@ -9,7 +9,7 @@ export default function PaginationComponent({
 	style,
 }) {
 	let pages = [];
-	if (currentPage - Math.floor(maxSize / 2) < 0) {
+	if (currentPage - Math.floor(maxSize / 2) <= 0) {
 		pages = Array.from(
 			{ length: Math.min(totalPages, maxSize) },
 			(v, i) => i
