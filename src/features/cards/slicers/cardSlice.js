@@ -1,29 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getCardDetail, updateCardDetail } from "../../services/cardService";
-import {
-  validAccountId,
-  validCvv,
-  validEmail,
-  validNumberHash,
-  validPin,
-} from "../../../app/regex";
 
 const initialState = {
-  card:
-    {
-      id: "-",
-      numberHash: "-",
-      accountId: "-",
-      created: "-",
-      activeSince: "-",
-      expirationDate: "-",
-      pin: "-",
-      cvv: "-",
-      confirmed: "-",
-      active: "-",
-      stolen: "-",
-      cardType: "-",
-    },
+  card: {
+    id: "-",
+    numberHash: "-",
+    accountId: "-",
+    created: "-",
+    activeSince: "-",
+    expirationDate: "-",
+    pin: "-",
+    cvv: "-",
+    confirmed: "-",
+    active: "-",
+    stolen: "-",
+    cardType: "-",
+  },
   props: {
     isEditable: false,
     isValidEmail: false,
@@ -43,7 +35,9 @@ export const cardSlice = createSlice({
     editCard(state, action) {
       state.props.isEditable = action.payload;
     },
-    validForm(state, action) {},
+    validForm(state, action) {
+      state.props = action.payload;
+    },
   },
   extraReducers: {
     [getCardDetail.fulfilled]: (state, action) => {
@@ -54,14 +48,16 @@ export const cardSlice = createSlice({
         payload.expirationDate
       ).toLocaleDateString();
 
-      state.card = payload
+      state.card = payload;
       state.status = "idle";
     },
     [getCardDetail.rejected]: (state, action) => {
       console.log(action.error.message);
       state.error = action.error.message;
     },
-    [updateCardDetail.fulfilled]: (state, action) => {},
+    [updateCardDetail.fulfilled]: (state, action) => {
+      state.card = action.payload
+    },
   },
 });
 

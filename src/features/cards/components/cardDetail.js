@@ -4,6 +4,13 @@ import { useParams, withRouter } from "react-router";
 
 import { getCardDetail } from "../../services/cardService";
 import { editCard, validForm } from "../slicers/cardSlice";
+import {
+  validAccountId,
+  validCvv,
+  validEmail,
+  validNumberHash,
+  validPin,
+} from "../../../app/regex";
 
 import Table from "react-bootstrap/Table";
 import Jumbotron from "react-bootstrap/Jumbotron";
@@ -11,10 +18,14 @@ import Button from "react-bootstrap/Button";
 
 export const CardDetail = () => {
   const currentState = useSelector((state) => state.cardDetail);
-  const dispatch = useDispatch();
   const { cardId } = useParams();
-  const card = currentState.card;
+  const dispatch = useDispatch();
   const props = currentState.props;
+  const card = Object.entries(currentState.card).map(([key, value]) => [
+    key,
+    value,
+  ]);
+  let updatedCard = Object.fromEntries(card);
 
   useEffect(() => {
     if (currentState.status === "init") {
@@ -30,17 +41,20 @@ export const CardDetail = () => {
 
   const onSave = (event) => {
     event.preventDefault();
-    // dispatch(validForm({}))
     if (props.isEditable === true) {
       dispatch(editCard(false));
     }
   };
 
-  const renderDetails = Object.entries(card).map(([key, value]) => (
+  const handleChange = (e) => {
+    updatedCard[e.target.name] = e.target.value;
+  };
+
+  const renderDetails = card.map(([key, value]) => (
     <td key={key}>{value.toString()}</td>
   ));
 
-  const editDetails = Object.entries(card).map(([key, value]) => {
+  const editDetails = card.map(([key, value]) => {
     switch (key) {
       case "numberHash":
       case "accountId":
@@ -48,7 +62,7 @@ export const CardDetail = () => {
       case "cvv":
         return (
           <td key={key}>
-            <input placeholder={value.toString()} />
+            <input placeholder={value.toString()} name={key} onChange={handleChange} />
           </td>
         );
       case "confirmed":
@@ -56,7 +70,7 @@ export const CardDetail = () => {
       case "active":
         return (
           <td key={key}>
-            <select defaultValue={value.toString()}>
+            <select defaultValue={value.toString()} name={key} onChange={handleChange}>
               <option value="true">true</option>
               <option value="false">false</option>
             </select>
@@ -65,7 +79,7 @@ export const CardDetail = () => {
       case "cardType":
         return (
           <td key={key}>
-            <select defaultValue={value.toString()}>
+            <select defaultValue={value.toString()} name={key} onChange={handleChange}>
               <option value="CARD_PLAIN">CARD_PLAIN</option>
               <option value="CARD_GOLD">CARD_GOLD</option>
               <option value="CARD_PLATINUM">CARD_PLATINUM</option>
