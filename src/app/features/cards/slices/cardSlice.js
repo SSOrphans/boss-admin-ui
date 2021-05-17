@@ -56,7 +56,6 @@ export const cardSlice = createSlice({
       state.error = action.error.message;
     },
     [saveCardDetail.rejected]: (state, action) => {
-      console.log(action.error.message);
       state.error = action.error.message;
     },
   },

@@ -62,7 +62,6 @@ export const CardDetail = () => {
 
     dispatch(validForm(Object.fromEntries(newProps)));
     dispatch(updateCard(newCard));
-    console.log(Object.fromEntries(newProps));
   };
 
   const onEdit = (e) => {
@@ -216,5 +215,3 @@ export const CardDetail = () => {
     </div>
   );
 };
-
-export default withRouter(CardDetail);
