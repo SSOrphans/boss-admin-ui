@@ -35,7 +35,7 @@ export default function PaginationComponent({
 	return (
 		<Pagination style={style}>
 			<PaginationItem disabled={currentPage <= 0}>
-				<PaginationLink
+				<PaginationLink id="firstPageLink"
 					first
 					onClick={(e) => handleClick(e, -currentPage)}
 				/>
