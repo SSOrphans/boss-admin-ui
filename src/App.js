@@ -6,6 +6,7 @@ import {
 	Route,
 	Redirect,
 } from "react-router-dom";
+import {ViewAccountComponent} from "./app/features";
 
 function App() {
 	return (
@@ -19,6 +20,10 @@ function App() {
 					<Route
 						path='/loans'
 						render={() => <h1>boss-admin-ui loan</h1>}
+					/>
+					<Route
+						path='/accounts/:id'
+						component={ViewAccountComponent}
 					/>
 					<Redirect to='/home' />
 				</Switch>
