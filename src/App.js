@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import { CardDetail } from "./features/cards/components/cardDetail";
+import { CardDetail } from "./app/features/cards/components/cardDetail";
 
 function App() {
   return (

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getCardDetail, updateCardDetail } from "../../services/cardService";
+import { getCardDetail, saveCardDetail } from "../../services/cardService";
 
 const initialState = {
   card: {
@@ -17,12 +17,12 @@ const initialState = {
     cardType: "-",
   },
   props: {
+    isSavable: true,
+    isValidPin: true,
+    isValidCvv: true,
+    isValidNumberHash: true,
+    isValidAccountId: true,
     isEditable: false,
-    isValidEmail: false,
-    isValidPin: false,
-    isValidCvv: false,
-    isValidNumberHas: false,
-    isValidAccountId: false,
   },
   status: "init",
   error: null,
@@ -38,29 +38,30 @@ export const cardSlice = createSlice({
     validForm(state, action) {
       state.props = action.payload;
     },
+    updateCard(state, action) {
+      state.card = action.payload;
+    },
   },
   extraReducers: {
     [getCardDetail.fulfilled]: (state, action) => {
       let payload = action.payload;
-      payload.created = new Date(payload.created).toLocaleDateString();
-      payload.activeSince = new Date(payload.activeSince).toLocaleDateString();
-      payload.expirationDate = new Date(
-        payload.expirationDate
-      ).toLocaleDateString();
+      payload.created = new Date(payload.created).toISOString();
+      payload.activeSince = new Date(payload.activeSince).toISOString();
+      payload.expirationDate = new Date(payload.expirationDate).toISOString();
 
       state.card = payload;
       state.status = "idle";
     },
     [getCardDetail.rejected]: (state, action) => {
-      console.log(action.error.message);
       state.error = action.error.message;
     },
-    [updateCardDetail.fulfilled]: (state, action) => {
-      state.card = action.payload
+    [saveCardDetail.rejected]: (state, action) => {
+      console.log(action.error.message);
+      state.error = action.error.message;
     },
   },
 });
 
-export const { editCard, validForm } = cardSlice.actions;
+export const { editCard, validForm, updateCard, canSave } = cardSlice.actions;
 
 export default cardSlice.reducer;
