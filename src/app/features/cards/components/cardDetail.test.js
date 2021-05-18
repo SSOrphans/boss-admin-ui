@@ -24,6 +24,9 @@ describe("card detail component", () => {
     expect(initState).toBeTruthy();
   });
 
+  it("should update card details", () => {
+  });
+
   it("should render html content", () => {
     const { getByText } = renderWithRedux(<CardDetail />);
 

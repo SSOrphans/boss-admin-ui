@@ -193,20 +193,20 @@ export const CardDetail = () => {
                 <tr>{renderDetails}</tr>
               </tbody>
             )}
-            {props.isEditable && (
+            {props.isEditable ? (
               <tbody>
                 <tr>{editDetails}</tr>
               </tbody>
-            )}
+            ) : null}
           </Table>
         </Jumbotron>
         <div className="m-2">
-          {!props.isEditable && <Button onClick={onEdit}>Edit</Button>}
-          {props.isEditable && (
+          {!props.isEditable ? <Button onClick={onEdit}>Edit</Button> : null}
+          {props.isEditable ? (
             <Button type="submit" disabled={!props.isSavable}>
               Save
             </Button>
-          )}
+          ) : null}
           <span className="text-danger p-3" hidden={props.isSavable}>
             Invalid input
           </span>
