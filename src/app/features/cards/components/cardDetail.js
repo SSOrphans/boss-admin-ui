@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
 
 import { getCardDetail, saveCardDetail } from "../../services/cardService";
-import { editCard, validForm, updateCard } from "../slices/cardSlice";
+import { editCard, validForm, updateCard } from "../slices/cardDetailSlice";
 import {
   validAccountId,
   validCvv,

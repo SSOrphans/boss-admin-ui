@@ -28,7 +28,7 @@ const initialState = {
   error: null,
 };
 
-export const cardSlice = createSlice({
+export const cardDetailSlice = createSlice({
   name: "cardDetails",
   initialState,
   reducers: {
@@ -61,6 +61,6 @@ export const cardSlice = createSlice({
   },
 });
 
-export const { editCard, validForm, updateCard, canSave } = cardSlice.actions;
+export const { editCard, validForm, updateCard, canSave } = cardDetailSlice.actions;
 
-export default cardSlice.reducer;
+export default cardDetailSlice.reducer;
