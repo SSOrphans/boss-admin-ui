@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams, withRouter } from "react-router";
+import { useParams } from "react-router";
 
 import { getCardDetail, saveCardDetail } from "../../services/cardService";
 import { editCard, validForm, updateCard } from "../slices/cardSlice";
