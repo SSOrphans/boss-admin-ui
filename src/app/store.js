@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import cardReducer from "./features/cards/slices/cardSlice";
+import cardDetailReducer from "./features/cards/slices/cardDetailSlice";
+import cardCreateReducer from "./features/cards/slices/cardCreateSlice";
 
 export const store = configureStore({
   reducer: {
-    cardDetail: cardReducer,
+    cardDetail: cardDetailReducer,
+    cardCreate: cardCreateReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
