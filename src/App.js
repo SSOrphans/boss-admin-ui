@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import LoansTable from "./app/features/loans/component/Loans";
 import {
 	BrowserRouter as Router,
 	Switch,
@@ -16,10 +17,7 @@ function App() {
 						path='/home'
 						render={() => <h1>boss-admin-ui home</h1>}
 					/>
-					<Route
-						path='/loans'
-						render={() => <h1>boss-admin-ui loan</h1>}
-					/>
+					<Route path='/loans' render={() => <LoansTable />} />
 					<Redirect to='/home' />
 				</Switch>
 			</Router>
