@@ -8,7 +8,9 @@ import {
 } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-datepicker/dist/react-datepicker.css";
 import { CardDetail } from "./app/features/cards/components/cardDetail";
+import { CardCreate } from "./app/features/cards/components/cardCreate";
 
 function App() {
   return (
@@ -17,7 +19,8 @@ function App() {
         <Switch>
           <Route path="/home" render={() => <h1>boss-admin-ui home</h1>} />
           <Route path="/loans" render={() => <h1>boss-admin-ui loan</h1>} />
-          <Route path="/cards/:cardId" component={CardDetail} />
+          <Route exact path="/cards/add" component={CardCreate} />
+          <Route exact path="/cards/:cardId" component={CardDetail} />
           <Redirect to="/home" />
         </Switch>
       </Router>
