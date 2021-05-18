@@ -11,3 +11,7 @@ export const saveCardDetail = createAsyncThunk(
     return await axios.put(`http://localhost:8080/api/cards/${card.id}`, card);
   }
 );
+
+export const addCard = createAsyncThunk("cards/createCard", async (card) => {
+  return await axios.post(`http://localhost:8080/api/cards`, card);
+});
