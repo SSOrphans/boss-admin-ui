@@ -8,6 +8,8 @@ export const store = configureStore({
     cardDetail: cardDetailReducer,
     cardCreate: cardCreateReducer,
   },
+  // need more research on serializable objects for redux
+  // temporarily disabling checks for api calls due to errors
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
