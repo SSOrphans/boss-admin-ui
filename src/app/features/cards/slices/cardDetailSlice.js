@@ -6,15 +6,15 @@ const initialState = {
     id: "-",
     numberHash: "-",
     accountId: "-",
-    created: "-",
-    activeSince: "-",
-    expirationDate: "-",
+    created: new Date(),
+    activeSince: new Date(),
+    expirationDate: new Date(),
     pin: "-",
     cvv: "-",
-    confirmed: "-",
-    active: "-",
-    stolen: "-",
-    cardType: "-",
+    confirmed: "false",
+    active: "false",
+    stolen: "false",
+    cardType: "CARD_PLAIN",
   },
   props: {
     isSavable: true,
@@ -50,17 +50,32 @@ export const cardDetailSlice = createSlice({
       payload.expirationDate = new Date(payload.expirationDate).toISOString();
 
       state.card = payload;
-      state.status = "idle";
+      state.status = action.meta.requestStatus;
+      state.error = null
+    },
+    [getCardDetail.pending]: (state, action) => {
+      state.status = action.meta.requestStatus;
     },
     [getCardDetail.rejected]: (state, action) => {
       state.error = action.error.message;
+      state.status = action.error.name;
+    },
+    [saveCardDetail.fulfilled]: (state, action) => {
+      state.props.isEditable = false;
+      state.status = action.meta.requestStatus;
+      state.error = null
+    },
+    [saveCardDetail.pending]: (state, action) => {
+      state.status = action.meta.requestStatus;
     },
     [saveCardDetail.rejected]: (state, action) => {
       state.error = action.error.message;
+      state.status = action.error.name;
     },
   },
 });
 
-export const { editCard, validForm, updateCard, canSave } = cardDetailSlice.actions;
+export const { editCard, validForm, updateCard, canSave } =
+  cardDetailSlice.actions;
 
 export default cardDetailSlice.reducer;

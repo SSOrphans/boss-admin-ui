@@ -1,6 +1,10 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
+import ReactDatePicker from "react-datepicker";
+import Table from "react-bootstrap/Table";
+import Jumbotron from "react-bootstrap/Jumbotron";
+import Button from "react-bootstrap/Button";
 
 import { getCardDetail, saveCardDetail } from "../../services/cardService";
 import { editCard, validForm, updateCard } from "../slices/cardDetailSlice";
@@ -10,10 +14,6 @@ import {
   validNumberHash,
   validPin,
 } from "../../../regex";
-
-import Table from "react-bootstrap/Table";
-import Jumbotron from "react-bootstrap/Jumbotron";
-import Button from "react-bootstrap/Button";
 
 export const CardDetail = () => {
   const currentState = useSelector((state) => state.cardDetail);
@@ -31,9 +31,13 @@ export const CardDetail = () => {
     }
   });
 
-  const handleChange = (e) => {
+  function handler(name, event, date) {
     let newCard = Object.fromEntries(card);
-    newCard[e.target.name] = e.target.value;
+    if (event !== null) {
+      newCard[name] = event.target.value;
+    } else {
+      newCard[name] = date;
+    }
 
     let newProps = Object.entries(props).map(([key, value]) => {
       switch (key) {
@@ -62,20 +66,17 @@ export const CardDetail = () => {
 
     dispatch(validForm(Object.fromEntries(newProps)));
     dispatch(updateCard(newCard));
-  };
+  }
 
   const onEdit = (e) => {
     e.preventDefault();
     if (props.isEditable === false) {
       dispatch(editCard(true));
-    } else {
-      dispatch(editCard(false));
     }
   };
 
   const onSave = (e) => {
     e.preventDefault();
-    dispatch(editCard(false));
     dispatch(saveCardDetail(Object.fromEntries(card)));
   };
 
@@ -95,7 +96,16 @@ export const CardDetail = () => {
       case "created":
       case "activeSince":
       case "expirationDate":
-        return <td key={key}>{new Date(value).toLocaleDateString()}</td>;
+        return (
+          <td key={key}>
+            <ReactDatePicker
+              className="col"
+              selected={new Date(value)}
+              onChange={(date) => handler(key, null, date)}
+              disabled={currentState.status === "pending"}
+            />
+          </td>
+        );
       case "numberHash":
       case "accountId":
       case "pin":
@@ -103,9 +113,10 @@ export const CardDetail = () => {
         return (
           <td key={key}>
             <input
+              className="col"
               placeholder={value.toString()}
-              name={key}
-              onChange={handleChange}
+              onChange={(event) => handler(key, event, null)}
+              disabled={currentState.status === "pending"}
             />
           </td>
         );
@@ -115,9 +126,10 @@ export const CardDetail = () => {
         return (
           <td key={key}>
             <select
+              className="col"
               defaultValue={value.toString()}
-              name={key}
-              onChange={handleChange}
+              onChange={(event) => handler(key, event, null)}
+              disabled={currentState.status === "pending"}
             >
               <option value="true">true</option>
               <option value="false">false</option>
@@ -128,9 +140,10 @@ export const CardDetail = () => {
         return (
           <td key={key}>
             <select
+              className="col"
               defaultValue={value.toString()}
-              name={key}
-              onChange={handleChange}
+              onChange={(event) => handler(key, event, null)}
+              disabled={currentState.status === "pending"}
             >
               <option value="CARD_PLAIN">CARD_PLAIN</option>
               <option value="CARD_GOLD">CARD_GOLD</option>
@@ -201,15 +214,31 @@ export const CardDetail = () => {
           </Table>
         </Jumbotron>
         <div className="m-2">
-          {!props.isEditable ? <Button onClick={onEdit}>Edit</Button> : null}
+          {!props.isEditable ? (
+            <Button
+              disabled={
+                currentState.status === "pending" ||
+                currentState.status === "Error"
+              }
+              onClick={onEdit}
+            >
+              Edit
+            </Button>
+          ) : null}
           {props.isEditable ? (
-            <Button type="submit" disabled={!props.isSavable}>
+            <Button
+              type="submit"
+              disabled={!props.isSavable || currentState.status === "pending"}
+            >
               Save
             </Button>
           ) : null}
           <span className="text-danger p-3" hidden={props.isSavable}>
-            Invalid input
+            Invalid form: Inputs can only contain numbers. Number hash has a
+            maximum of 64 characters. PINs require 4 numbers, and CVVs require 3
+            numbers.
           </span>
+          <span className="text-danger p-3">{currentState.error}</span>
         </div>
       </form>
     </div>
