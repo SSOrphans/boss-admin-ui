@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ReactDatePicker from "react-datepicker";
 import Table from "react-bootstrap/Table";
@@ -13,16 +13,24 @@ import {
   validNumberHash,
   validPin,
 } from "../../../regex";
+import { useHistory } from "react-router";
 
 export const CardCreate = () => {
   const currentState = useSelector((state) => state.cardCreate);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const props = currentState.props;
   const card = Object.entries(currentState.card).map(([key, value]) => [
     key,
     value,
   ]);
+
+  useEffect(() => {
+    if (currentState.props.cardId) {
+      history.push(`/cards/${currentState.props.cardId}`);
+    }
+  });
 
   function handler(name, event, date) {
     let newCard = Object.fromEntries(card);

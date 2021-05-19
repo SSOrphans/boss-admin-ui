@@ -20,8 +20,9 @@ const initialState = {
     isValidCvv: false,
     isValidNumberHash: false,
     isValidAccountId: false,
+    cardId: null,
   },
-  status: 'init',
+  status: "init",
   error: null,
 };
 
@@ -38,8 +39,9 @@ export const cardCreateSlice = createSlice({
   },
   extraReducers: {
     [addCard.fulfilled]: (state, action) => {
+      state.props.cardId = action.payload.data.id;
       state.status = action.meta.requestStatus;
-      state.error = null
+      state.error = null;
     },
     [addCard.pending]: (state, action) => {
       state.status = action.meta.requestStatus;
