@@ -19,7 +19,7 @@ function App() {
       <Router>
         <Switch>
           <Route path="/home" render={() => <h1>boss-admin-ui home</h1>} />
-					<Route path='/loans' render={() => <LoansTable />} />
+          <Route path="/loans" render={() => <LoansTable />} />
           <Route exact path="/cards/add" component={CardCreate} />
           <Route exact path="/cards/:cardId" component={CardDetail} />
           <Redirect to="/home" />
@@ -27,19 +27,16 @@ function App() {
       </Router>
     </div>
   );
-	return (
-		<div className='App'>
-			<Router>
-				<Switch>
-					<Route
-						path='/home'
-						render={() => <h1>boss-admin-ui home</h1>}
-					/>
-					<Redirect to='/home' />
-				</Switch>
-			</Router>
-		</div>
-	);
+  return (
+    <div className="App">
+      <Router>
+        <Switch>
+          <Route path="/home" render={() => <h1>boss-admin-ui home</h1>} />
+          <Redirect to="/home" />
+        </Switch>
+      </Router>
+    </div>
+  );
 }
 
 export default App;
