@@ -27,16 +27,6 @@ function App() {
       </Router>
     </div>
   );
-  return (
-    <div className="App">
-      <Router>
-        <Switch>
-          <Route path="/home" render={() => <h1>boss-admin-ui home</h1>} />
-          <Redirect to="/home" />
-        </Switch>
-      </Router>
-    </div>
-  );
 }
 
 export default App;
