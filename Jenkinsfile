@@ -9,7 +9,7 @@ node {
                 nodejs('NodeJS') {
                     echo "Building $serviceName"
                     sh 'npm install'
-                    sh 'npm rum build'
+                    sh 'npm run build'
                 }
             }
             stage('Push to S3') {
