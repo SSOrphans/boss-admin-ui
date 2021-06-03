@@ -1,19 +1,23 @@
 node {
     try {
-        withEnv(['serviceName=boss-admin-ui', "commitHash=${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"]) {
-            stage('Checkout') {
-                echo "Checking out $serviceName"
-                checkout scm
-            }
-            stage('Build') {
-                nodejs('NodeJS') {
-                    echo "Building $serviceName"
-                    sh 'npm install'
-                    sh 'npm run build'
+        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'aws-cli', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                withEnv(["AWS_ELB_DNS=${sh(script: 'aws elbv2 --region us-east-2 describe-load-balancers --query LoadBalancers[*].DNSName --output text', returnStdout: true).trim()}",
+                        'serviceName=boss-admin']) {
+
+                stage('Checkout') {
+                    echo "Checking out $serviceName"
+                    checkout scm
                 }
-            }
-            stage('Push to S3') {
-                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'aws-cli', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+
+                stage('Build') {
+                    nodejs('NodeJS') {
+                        echo "Building $serviceName"
+                        sh 'npm install'
+                        sh 'npm run build'
+                    }
+                }
+
+                stage('Push to S3') {
                     echo "Pushing to s3"
                     sh 'aws s3 cp --recursive build s3://$serviceName/'
                 }
