@@ -2,7 +2,7 @@ node {
     try {
         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'aws-cli', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                 withEnv(["AWS_ELB_DNS=${sh(script: 'aws elbv2 --region us-east-2 describe-load-balancers --query LoadBalancers[*].DNSName --output text', returnStdout: true).trim()}",
-                        'serviceName=boss-admin']) {
+                        'serviceName=boss-admin-ui']) {
 
                 stage('Checkout') {
                     echo "Checking out $serviceName"
