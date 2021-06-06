@@ -1,36 +1,21 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import ReactDatePicker from "react-datepicker";
-import Table from "react-bootstrap/Table";
-import Jumbotron from "react-bootstrap/Jumbotron";
-import Button from "react-bootstrap/Button";
 
-import { addCard } from "../../services/cardService";
-import { validForm, updateCard } from "../slices/cardCreateSlice";
+import { useDispatch } from "react-redux";
 import {
   validAccountId,
   validCvv,
   validNumberHash,
   validPin,
 } from "../../../regex";
-import { useHistory } from "react-router";
 
-export const CardCreate = () => {
-  const currentState = useSelector((state) => state.cardCreate);
+export const CardFormInput = ({currentState, validForm, updateCard}) => {
   const dispatch = useDispatch();
-  const history = useHistory();
-
   const props = currentState.props;
   const card = Object.entries(currentState.card).map(([key, value]) => [
     key,
     value,
   ]);
-
-  useEffect(() => {
-    if (currentState.props.cardId) {
-      history.push(`/cards/${currentState.props.cardId}`);
-    }
-  });
 
   function handler(name, event, date) {
     let newCard = Object.fromEntries(card);
@@ -69,13 +54,9 @@ export const CardCreate = () => {
     dispatch(updateCard(newCard));
   }
 
-  const onSave = (e) => {
-    e.preventDefault();
-    dispatch(addCard(Object.fromEntries(card)));
-  };
-
-  const renderFormInputs = card.map(([key, value]) => {
+  const formInputs = card.map(([key, value]) => {
     switch (key) {
+      case "created":
       case "activeSince":
       case "expirationDate":
         return (
@@ -139,68 +120,8 @@ export const CardCreate = () => {
   });
 
   return (
-    <div>
-      <form onSubmit={onSave}>
-        <Jumbotron className="p-3 m-2">
-          <h4 className="pb-3">Manually Create Card</h4>
-          <Table>
-            <thead>
-              <tr>
-                <th>
-                  Number Hash
-                  <span
-                    className="text-danger"
-                    hidden={props.isValidNumberHash}
-                  >
-                    **
-                  </span>
-                </th>
-                <th>
-                  Account ID
-                  <span className="text-danger" hidden={props.isValidAccountId}>
-                    **
-                  </span>
-                </th>
-                <th>Active Since</th>
-                <th>Expiration Date</th>
-                <th>
-                  PIN
-                  <span className="text-danger" hidden={props.isValidPin}>
-                    **
-                  </span>
-                </th>
-                <th>
-                  CVV
-                  <span className="text-danger" hidden={props.isValidCvv}>
-                    **
-                  </span>
-                </th>
-                <th>Confirmed</th>
-                <th>Active</th>
-                <th>Stolen</th>
-                <th>Card Type</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>{renderFormInputs}</tr>
-            </tbody>
-          </Table>
-        </Jumbotron>
-        <div className="m-2">
-          <Button
-            type="submit"
-            disabled={!props.isSavable || currentState.status === "pending"}
-          >
-            Add card
-          </Button>
-          <span className="text-danger p-3" hidden={props.isSavable}>
-            Invalid form: Inputs can only contain numbers. Number hash has a
-            maximum of 64 characters. PINs require 4 numbers, and CVVs require 3
-            numbers.
-          </span>
-          <span className="text-danger p-3">{currentState.error}</span>
-        </div>
-      </form>
-    </div>
+    <tbody>
+      <tr>{formInputs}</tr>
+    </tbody>
   );
 };

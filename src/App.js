@@ -10,8 +10,8 @@ import {
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-datepicker/dist/react-datepicker.css";
-import { CardDetail } from "./app/features/cards/components/cardDetail";
-import { CardCreate } from "./app/features/cards/components/cardCreate";
+import { CardDetail } from "./app/features/cards/components/card-detail";
+import { CardCreate } from "./app/features/cards/components/card-create";
 
 function App() {
   return (
