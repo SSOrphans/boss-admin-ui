@@ -38,6 +38,8 @@ export const CardDetail = () => {
       case "cards/deleteCard/fulfilled":
         history.push(`/cards/`);
         break;
+      default:
+        break;
     }
   });
 
