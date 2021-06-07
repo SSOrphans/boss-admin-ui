@@ -32,7 +32,6 @@ export const accountSlice = createSlice(
       },
       [fetchAccount.rejected]: (state, action) => {
         state.account.status = "error";
-        console.log(action)
       }
     }
   }

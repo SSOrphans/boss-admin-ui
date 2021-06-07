@@ -13,4 +13,13 @@ export const deleteAccount = createAsyncThunk(
   async ({id}) => {
     return await axios.delete(`/api/admin/v1/accounts/${id}`);
   }
+);
+
+export const fetchAccountList = createAsyncThunk(
+  "accounts/fetchAccountList",
+  async (params= {}) => {
+    return await axios.get(`/api/admin/v1/accounts/`,
+      {params}
+    );
+  }
 )
