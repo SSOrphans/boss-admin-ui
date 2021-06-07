@@ -4,6 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import { render } from "@testing-library/react";
 import { store } from "../../../store";
 import { CardDetail } from "../components/card-detail";
+import { CardConfirmModal } from "../components/card-confirm-modal";
 import { editCard } from "../slices/card-detail-slice";
 
 jest.mock("axios");
@@ -34,6 +35,14 @@ test("should render save button", () => {
 
   store.dispatch(editCard(true));
   expect(getByText("Save")).toBeInTheDocument();
+});
+
+test("should render modal", () => {
+  const { getByText } = renderWithRedux(<CardConfirmModal currentState={{props: {showConfirmModal: true}}} />);
+
+  expect(getByText("Confirm delete?")).toBeInTheDocument();
+  expect(getByText("Cancel")).toBeInTheDocument();
+  expect(getByText("Yes")).toBeInTheDocument();
 });
 
 test("should render table headers", () => {
