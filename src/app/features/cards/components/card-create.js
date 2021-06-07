@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Button from "react-bootstrap/Button";
-import Table from "react-bootstrap/esm/Table";
+import Table from "react-bootstrap/Table";
 
 import { addCard } from "../../services/card-service";
 import { validForm, updateCard } from "../slices/card-create-slice";
