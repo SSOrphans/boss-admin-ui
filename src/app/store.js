@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import loanSlice from "./features/loans/slice/loanSlice";
 import accountSlice from "./features/accounts/slices/accountSlice";
 import accountListSlice from "./features/accounts/slices/accountListSlice";
+
 import cardDetailReducer from "./features/cards/slices/cardDetailSlice";
 import cardCreateReducer from "./features/cards/slices/cardCreateSlice";
 
