@@ -1,7 +1,5 @@
 import React from "react";
 import "./App.css";
-import LoansTable from "./app/features/loans/component/Loans";
-import {ViewAccountComponent} from "./app/features";
 import {
   BrowserRouter as Router,
   Switch,
@@ -13,7 +11,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { CardDetail } from "./app/features/cards/components/cardDetail";
 import { CardCreate } from "./app/features/cards/components/cardCreate";
-import {ViewAccountListComponent} from "./app/features/accounts/components/ViewAccountListComponent";
+import LoansTable from "./app/features/loans/component/Loans";
+import {ViewAccountComponent, ViewAccountListComponent} from "./app/features";
 
 function App() {
   return (
@@ -26,7 +25,7 @@ function App() {
           <Route exact path="/cards/:cardId" component={CardDetail} />
 					<Route exact path='/accounts' component={ViewAccountListComponent} />
 					<Route path='/accounts/:id' component={ViewAccountComponent} />
-          <Redirect to="/home" />
+					<Redirect to="/home" />
         </Switch>
       </Router>
     </div>
