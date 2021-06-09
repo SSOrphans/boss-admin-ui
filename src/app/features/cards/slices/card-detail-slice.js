@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getCardDetail, saveCardDetail } from "../../services/cardService";
+import {
+  getCardDetail,
+  saveCardDetail,
+  deleteCard,
+} from "../../services/card-service";
 
 const initialState = {
   card: {
@@ -22,7 +26,8 @@ const initialState = {
     isValidCvv: true,
     isValidNumberHash: true,
     isValidAccountId: true,
-    isEditable: false,
+    isClickable: false,
+    showConfirmModal: false,
   },
   status: "init",
   error: null,
@@ -33,13 +38,16 @@ export const cardDetailSlice = createSlice({
   initialState,
   reducers: {
     editCard(state, action) {
-      state.props.isEditable = action.payload;
+      state.props.isClickable = action.payload;
     },
     validForm(state, action) {
       state.props = action.payload;
     },
     updateCard(state, action) {
       state.card = action.payload;
+    },
+    confirmDelete(state, action){
+      state.props.showConfirmModal = action.payload;
     },
   },
   extraReducers: {
@@ -50,8 +58,8 @@ export const cardDetailSlice = createSlice({
       payload.expirationDate = new Date(payload.expirationDate).toISOString();
 
       state.card = payload;
-      state.status = action.meta.requestStatus;
-      state.error = null
+      state.status = action.type;
+      state.error = null;
     },
     [getCardDetail.pending]: (state, action) => {
       state.status = action.meta.requestStatus;
@@ -61,9 +69,9 @@ export const cardDetailSlice = createSlice({
       state.status = action.error.name;
     },
     [saveCardDetail.fulfilled]: (state, action) => {
-      state.props.isEditable = false;
-      state.status = action.meta.requestStatus;
-      state.error = null
+      state.props.isClickable = false;
+      state.status = action.type;
+      state.error = null;
     },
     [saveCardDetail.pending]: (state, action) => {
       state.status = action.meta.requestStatus;
@@ -72,10 +80,21 @@ export const cardDetailSlice = createSlice({
       state.error = action.error.message;
       state.status = action.error.name;
     },
+    [deleteCard.fulfilled]: (state, action) => {
+      state.status = action.type;
+      state.error = null;
+    },
+    [deleteCard.pending]: (state, action) => {
+      state.status = action.meta.requestStatus;
+    },
+    [deleteCard.rejected]: (state, action) => {
+      state.error = action.error.message;
+      state.status = action.error.name;
+    },
   },
 });
 
-export const { editCard, validForm, updateCard, canSave } =
+export const { editCard, validForm, updateCard, canSave, confirmDelete } =
   cardDetailSlice.actions;
 
 export default cardDetailSlice.reducer;

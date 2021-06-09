@@ -15,3 +15,7 @@ export const saveCardDetail = createAsyncThunk(
 export const addCard = createAsyncThunk("cards/createCard", async (card) => {
   return await axios.post(`http://localhost:8080/api/cards`, card);
 });
+
+export const deleteCard = createAsyncThunk("cards/deleteCard", async (id) => {
+  return await axios.delete(`http://localhost:8080/api/cards/${id}`);
+});
