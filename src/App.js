@@ -10,6 +10,7 @@ import LoansTable from "./app/features/loans/component/Loans";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-datepicker/dist/react-datepicker.css";
+
 import {ViewAccountComponent, ViewAccountListComponent} from "./app/features";
 import {CardCreate} from "./app/features/cards/components/card-create";
 import {CardDetail} from "./app/features/cards/components/card-detail";
