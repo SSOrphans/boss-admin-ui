@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addCard } from "../../services/cardService";
+import { addCard } from "../../services/card-service";
 
 const initialState = {
   card: {
