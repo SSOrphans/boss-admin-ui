@@ -1,0 +1,13 @@
+html{
+    margin: 0;
+    padding: 0;
+}
+
+.bg {
+    background-image: url("./assets/bankground.jpeg");
+    min-height: 1400px;
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: auto;
+}
