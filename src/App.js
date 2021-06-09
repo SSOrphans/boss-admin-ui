@@ -1,17 +1,19 @@
 import React from "react";
 import "./App.css";
-import LoansTable from "./app/features/loans/component/Loans";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
 } from "react-router-dom";
+import LoansTable from "./app/features/loans/component/Loans";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-datepicker/dist/react-datepicker.css";
-import { CardDetail } from "./app/features/cards/components/card-detail";
-import { CardCreate } from "./app/features/cards/components/card-create";
+
+import {ViewAccountComponent, ViewAccountListComponent} from "./app/features";
+import {CardCreate} from "./app/features/cards/components/card-create";
+import {CardDetail} from "./app/features/cards/components/card-detail";
 
 function App() {
   return (
@@ -22,7 +24,9 @@ function App() {
           <Route path="/loans" render={() => <LoansTable />} />
           <Route exact path="/cards/add" component={CardCreate} />
           <Route exact path="/cards/:cardId" component={CardDetail} />
-          <Redirect to="/home" />
+					<Route exact path='/accounts' component={ViewAccountListComponent} />
+					<Route path='/accounts/:id' component={ViewAccountComponent} />
+					<Redirect to="/home" />
         </Switch>
       </Router>
     </div>
