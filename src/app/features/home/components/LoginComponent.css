@@ -280,3 +280,15 @@ input[type=text]::placeholder {
 .title {
     font-family: Roboto, serif;
 }
+
+.login-component {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+@media (min-width: 990px) {
+    .login-component {
+        margin-left: 25%;
+        margin-right: 25%;
+    }
+}

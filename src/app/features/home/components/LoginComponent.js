@@ -12,9 +12,9 @@ export const LoginComponent = () => {
   }
   
   return (
-    <div>
+    <div className="login-component">
       <h1 className="login-title d-flex justify-content-center">Bank of Smoothstack</h1>
-      <form className="d-flex flex-column" onSubmit={handleLogin}>
+      <form className="d-flex flex-column" onSubmit={handleLogin} method="POST">
         <input type="text" id="login" className="fadeIn second" name="username" placeholder="login"/>
         <input type="text" id="password" className="fadeIn third" name="password" placeholder="password"/>
         <input type="submit" className="fadeIn fourth" value="Log In"/>
