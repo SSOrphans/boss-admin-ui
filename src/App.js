@@ -9,7 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import {ViewAccountComponent, ViewAccountListComponent} from "./app/features";
 import {CardCreate} from "./app/features/cards/components/card-create";
 import {CardDetail} from "./app/features/cards/components/card-detail";
-import {HomeComponent} from "./app/features/home/components/HomeComponent";
+import {LandingComponent} from "./app/features/home/components/LandingComponent";
 import {NavBarComponent} from "./app/features/shared/components/NavBarComponent";
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
       <div className="App m-5">
         <Router>
           <Switch>
-            <Route path="/home" component={HomeComponent}/>
+            <Route path="/home" component={LandingComponent}/>
             <Route path="/loans" render={() => <LoansTable/>}/>
             <Route exact path="/cards/add" component={CardCreate}/>
             <Route exact path="/cards/:cardId" component={CardDetail}/>
