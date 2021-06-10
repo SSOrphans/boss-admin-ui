@@ -40,7 +40,7 @@ export const ViewAccountListComponent = () => {
   }
   
   return (
-    <Table striped bordered>
+    <Table striped bordered dark>
       <thead>
       <tr>
         <th onClick={() => setSortBy("id")}>ID</th>
