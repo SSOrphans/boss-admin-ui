@@ -5,6 +5,7 @@ import accountListSlice from "./features/accounts/slices/accountListSlice";
 
 import cardCreateReducer from "./features/cards/slices/card-create-slice";
 import cardDetailReducer from "./features/cards/slices/card-detail-slice";
+import loginSlice from "./features/home/slices/home-login-slice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
 		account: accountSlice,
 		accountList: accountListSlice,
     loans: loanSlice,
+    login: loginSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
