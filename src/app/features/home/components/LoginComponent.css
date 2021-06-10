@@ -282,6 +282,7 @@ input[type=text]::placeholder {
 }
 
 .login-component {
+    margin-top: 10%;
     margin-left: 5%;
     margin-right: 5%;
 }
