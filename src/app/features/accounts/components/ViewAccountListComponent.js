@@ -2,8 +2,9 @@ import React, {useEffect} from "react";
 import {ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle, Table} from "reactstrap"
 import {useDispatch, useSelector} from "react-redux";
 import {fetchAccountList} from "../../services/accountService";
-import {setFilter, setKeyword, setSortBy, toggleFilterDropdown} from "../slices/accountListSlice"
+import {setFilter, setKeyword, setSortBy, toggleFilterDropdown, changePage} from "../slices/accountListSlice"
 import {FaFilter} from "react-icons/fa";
+import PaginationComponent from "../../shared/components/PaginationComponent";
 
 export const ViewAccountListComponent = () => {
   const currentState = useSelector((state) => state.accountList);
@@ -23,7 +24,6 @@ export const ViewAccountListComponent = () => {
   
   const _setSortBy = (sortBy) => {
     const {payload} = dispatch(setSortBy({sortBy}));
-    console.log(payload)
     dispatch(fetchAccountList({...currentState.accountPage.options, ...payload}));
   }
   
@@ -38,6 +38,11 @@ export const ViewAccountListComponent = () => {
       filter = "";
     const {payload} = dispatch(setFilter({filter}));
     dispatch(fetchAccountList({...currentState.accountPage.options, ...payload}))
+  }
+  
+  const _changePage = (newPage) => {
+    newPage = newPage % currentState.accountPage.pages;
+    dispatch(changePage({page:newPage}))
   }
   
   const toggleDropdown = () => {
@@ -117,6 +122,13 @@ export const ViewAccountListComponent = () => {
         {renderAccounts()}
         </tbody>
       </Table>
+      <PaginationComponent
+        totalPages={currentState.accountPage.pages}
+        currentPage={currentState.accountPage.options.offset}
+        onPageChanged={(i) => {
+          _changePage(i);
+        }}
+      />
     </>
   )
 }
