@@ -11,3 +11,7 @@ html{
     background-size: cover;
     overflow: auto;
 }
+
+a:hover{
+    color: #6ec1ed !important;
+}

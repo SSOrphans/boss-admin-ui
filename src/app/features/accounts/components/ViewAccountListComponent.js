@@ -74,7 +74,7 @@ export const ViewAccountListComponent = () => {
           <td><a href={`/accounts/${account.id}`}>{account.id}</a></td>
           <td>{account.name}</td>
           <td>{account.balance}</td>
-          <td>{account.accountType}</td>
+          <td>{account.accountType.replace("ACCOUNT_", "")}</td>
           <td>{account.opened}</td>
           <td>{account.closed ? account.closed : "-"}</td>
           <td>{account.confirmed ? "yes" : "no"}</td>
