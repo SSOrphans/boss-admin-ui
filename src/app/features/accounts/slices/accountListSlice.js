@@ -26,8 +26,12 @@ export const accountListSlice = createSlice(
       setFilter(state, action) {
         state.accountPage.options.filter = action.payload.filter
       },
+      setLimit(state, action) {
+        state.accountPage.options.offset =  action.payload.offset;
+        state.accountPage.options.limit = action.payload.limit;
+      },
       changePage(state, action){
-        state.accountPage.options.offset = action.payload.page;
+        state.accountPage.options.offset = action.payload.offset;
       },
       toggleFilterDropdown(state, action) {
         state.accountPage.isFilterDropdownOpen = !state.accountPage.isFilterDropdownOpen
@@ -47,6 +51,6 @@ export const accountListSlice = createSlice(
   }
 )
 
-export const {setSortBy, setKeyword, toggleFilterDropdown, setFilter, changePage} = accountListSlice.actions;
+export const {setSortBy, setKeyword, toggleFilterDropdown, setFilter, setLimit, changePage} = accountListSlice.actions;
 
 export default accountListSlice.reducer;

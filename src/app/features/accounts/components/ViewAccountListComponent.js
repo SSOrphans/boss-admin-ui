@@ -1,8 +1,9 @@
 import React, {useEffect} from "react";
+import "./ViewAccountListComponent.css";
 import {ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle, Table} from "reactstrap"
 import {useDispatch, useSelector} from "react-redux";
 import {fetchAccountList} from "../../services/accountService";
-import {setFilter, setKeyword, setSortBy, toggleFilterDropdown, changePage} from "../slices/accountListSlice"
+import {changePage, setFilter, setKeyword, setLimit, setSortBy, toggleFilterDropdown} from "../slices/accountListSlice"
 import {FaFilter} from "react-icons/fa";
 import PaginationComponent from "../../shared/components/PaginationComponent";
 
@@ -40,9 +41,16 @@ export const ViewAccountListComponent = () => {
     dispatch(fetchAccountList({...currentState.accountPage.options, ...payload}))
   }
   
+  const _setLimit = (limit) => {
+    const {payload} = dispatch(setLimit({limit, offset:0}));
+    dispatch(fetchAccountList({...currentState.accountPage.options, ...payload}))
+  }
+  
   const _changePage = (newPage) => {
     newPage = newPage % currentState.accountPage.pages;
-    dispatch(changePage({page:newPage}))
+    const {payload} = dispatch(changePage({offset: newPage}))
+    dispatch(fetchAccountList({...currentState.accountPage.options, ...payload}))
+  
   }
   
   const toggleDropdown = () => {
@@ -79,7 +87,7 @@ export const ViewAccountListComponent = () => {
   
   return (
     <>
-      <div className='form-group form-inline justify-content-between'>
+      <div className='form-group form-inline search-filter'>
         <input
           className='form-control'
           type='text'
@@ -122,13 +130,27 @@ export const ViewAccountListComponent = () => {
         {renderAccounts()}
         </tbody>
       </Table>
-      <PaginationComponent
-        totalPages={currentState.accountPage.pages}
-        currentPage={currentState.accountPage.options.offset}
-        onPageChanged={(i) => {
-          _changePage(i);
-        }}
-      />
+      <div className="d-flex flex-row flex-wrap pagination-limit">
+        <PaginationComponent
+          totalPages={currentState.accountPage.pages}
+          currentPage={currentState.accountPage.options.offset}
+          maxSize={10}
+          onPageChanged={(i) => {
+            _changePage(currentState.accountPage.options.offset + i);
+          }}
+        />
+        <select
+          className='custom-select w-auto'
+          value={currentState.accountPage.options.limit}
+          onChange={(event) => {
+            _setLimit(event.target.value);
+          }}>
+          <option value='1'>1 item per page</option>
+          <option value='5'>5 items per page</option>
+          <option value='10'>10 items per page</option>
+          <option value='20'>20 items per page</option>
+        </select>
+      </div>
     </>
   )
 }
