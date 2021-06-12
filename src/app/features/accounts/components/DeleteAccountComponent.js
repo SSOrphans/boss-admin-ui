@@ -13,6 +13,6 @@ export const DeleteAccountComponent = () => {
   }
   
   return (
-    <Button color="danger" onClick={onDeleteAccount} hidden={currentState.account.status !== "fetched"}>Delete</Button>
+    <a className="btn btn-danger" href={"/accounts"} color="danger" onClick={onDeleteAccount} hidden={currentState.account.status !== "fetched"}>Delete</a>
   )
 }
