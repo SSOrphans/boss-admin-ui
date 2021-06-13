@@ -6,11 +6,17 @@ import {
 	DropdownToggle,
 	DropdownItem,
 	DropdownMenu,
+	Button,
 } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { FaSortUp, FaSortDown, FaSort, FaFilter } from "react-icons/fa";
-import { fetchAllLoans, fetchAllLoansTypes } from "../../services/loanService";
+import {
+	addLoan,
+	fetchAllLoans,
+	fetchAllLoansTypes,
+} from "../../services/loanService";
 import PaginationComponent from "../../shared/components/PaginationComponent";
+import LoanModal from "./LoanModal";
 
 export default function LoansTable() {
 	const [currentPage, setCurrentPage] = useState(0);
@@ -22,9 +28,9 @@ export default function LoansTable() {
 	);
 	const [dropdownOpen, setOpen] = useState(false);
 	const [dropdownValue, setDropdownValue] = useState("LOAN_UNKNOWN");
-
+	const [isModalOpen, setModalIsOpen] = useState(false);
 	const dispatch = useDispatch();
-	const toggle = () => setOpen(!dropdownOpen);
+	const toggleDropdown = () => setOpen(!dropdownOpen);
 
 	useEffect(() => {
 		dispatch(fetchAllLoansTypes());
@@ -37,7 +43,7 @@ export default function LoansTable() {
 				...sort,
 			})
 		);
-	}, [currentPage, sort, limit, dropdownValue, searchBar]);
+	}, [currentPage, sort, limit, dropdownValue, searchBar, dispatch]);
 
 	function selectSort(sortName) {
 		if (sort.sortBy === sortName) {
@@ -79,22 +85,49 @@ export default function LoansTable() {
 		setSearchBar(event.target.value);
 	}
 
+	function onCreateLoanSubmit(loan) {
+		dispatch(addLoan(loan));
+	}
+
 	function formatLoanType(type) {
 		let loanType = type?.toLowerCase().replace("loan_", "");
 		loanType = loanType[0]?.toUpperCase() + loanType?.substring(1);
 		return loanType;
 	}
+
 	return (
-		<div className='container-fluid mt-2'>
+		<div
+			className='container-fluid mt-2'
+			style={{
+				backgroundColor: "whitesmoke",
+				borderRadius: 5,
+				padding: 20,
+			}}>
+			<LoanModal
+				isModalOpen={isModalOpen}
+				setModalIsOpen={() => setModalIsOpen()}
+				loanTypes={loanTypes}
+				formatLoanType={(type) => formatLoanType(type)}
+				onSubmit={(loan) => onCreateLoanSubmit(loan)}
+			/>
 			<div className='form-group form-inline justify-content-between'>
-				<input
-					className='form-control'
-					type='text'
-					placeholder='Enter loan number..'
-					onChange={(val) => onSearchBarChanged(val)}
-				/>
-				<ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
-					<DropdownToggle className='dropdown' caret>
+				<div>
+					<input
+						className='form-control'
+						style={{ borderColor: "grey" }}
+						type='text'
+						placeholder='Enter loan number..'
+						onChange={(val) => onSearchBarChanged(val)}
+					/>
+					<Button
+						type='button'
+						color='primary'
+						onClick={() => setModalIsOpen(true)}>
+						Add new loan
+					</Button>
+				</div>
+				<ButtonDropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
+					<DropdownToggle className='dropdown' caret color='primary'>
 						{dropdownValue === "LOAN_UNKNOWN"
 							? ""
 							: formatLoanType(dropdownValue)}

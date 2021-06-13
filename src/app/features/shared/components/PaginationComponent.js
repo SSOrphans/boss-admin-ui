@@ -2,7 +2,7 @@ import React from "react";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 
 export default function PaginationComponent({
-	totalPages,
+	totalPages = 1,
 	currentPage = 0,
 	maxSize = 5,
 	onPageChanged,
@@ -35,7 +35,8 @@ export default function PaginationComponent({
 	return (
 		<Pagination style={style}>
 			<PaginationItem disabled={currentPage <= 0}>
-				<PaginationLink id="firstPageLink"
+				<PaginationLink
+					id='firstPageLink'
 					first
 					onClick={(e) => handleClick(e, -currentPage)}
 				/>

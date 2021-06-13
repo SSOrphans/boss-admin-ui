@@ -22,3 +22,8 @@ export const fetchAllLoansTypes = createAsyncThunk(
 		return await axios.get(url.href);
 	}
 );
+
+export const addLoan = createAsyncThunk("loans/addLoan", async (loan) => {
+	let url = new URL(`http://localhost:8080/api/loans`);
+	return await axios.post(url.href, loan);
+});
