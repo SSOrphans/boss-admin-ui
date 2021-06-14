@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
 	Modal,
@@ -18,21 +18,24 @@ import {
 	InputGroupAddon,
 } from "reactstrap";
 
-export default function LoanModal({
+export default function EditLoanModal({
 	isModalOpen,
 	setModalIsOpen,
+	loan,
 	loanTypes,
 	formatLoanType,
 	onSubmit,
 }) {
 	const toggle = () => setModalIsOpen(!isModalOpen);
 	const [branchId, setbranchId] = useState(0);
+	const [loanNumber, setLoanNumber] = useState(0);
 	const [userId, setUserId] = useState(0);
 	const [loanType, setLoanType] = useState(0);
 	const [amount, setAmount] = useState(0);
 	const [amountDue, setAmountDue] = useState(0);
 	const [interestRate, setInterestRate] = useState(0);
-	const [dueDate, setDueDate] = useState(Date.now());
+	const [dueDate, setDueDate] = useState("");
+	const [takenAt, setakenAt] = useState("");
 
 	const [validators, setValidators] = useState({
 		branchIdIsValid: true,
@@ -41,20 +44,53 @@ export default function LoanModal({
 		amountDueIsValid: true,
 		interestRateIsValid: true,
 		dueDateIsValid: true,
+		dateTakenIsValid: true,
+		loanNumberIsValid: true,
 	});
+
+	useEffect(() => {
+		setLoanNumber(loan.loanNumber);
+		setbranchId(loan.branchId);
+		setUserId(loan.userId);
+		setAmount(loan.amount);
+		setAmountDue(loan.amountDue);
+		setInterestRate(loan.interestRate);
+		setDueDate(loan.dueBy);
+		setakenAt(loan.takenAt);
+		setLoanType(
+			loanTypes.find((type) => {
+				return type.name === loan.loanType;
+			})?.id - 1
+		);
+	}, [
+		loan.branchId,
+		loan.userId,
+		loan.amount,
+		loan.amountDue,
+		loan.interestRate,
+		loan.dueDate,
+		loan.dueBy,
+		loan.takenAt,
+		loan.loanNumber,
+		loan.loanType,
+		loanTypes,
+	]);
 
 	const submit = (e) => {
 		e.preventDefault();
-		const loan = {
+		const newLoan = {
+			id: loan?.id,
+			loanNumber: loanNumber,
 			branchId: branchId,
 			userId: userId,
 			loanType: loanType,
 			amount: amount,
 			amountDue: amountDue,
 			interestRate: interestRate,
+			takenAt: takenAt,
 			dueBy: dueDate,
 		};
-		onSubmit(loan);
+		onSubmit(newLoan);
 		toggle();
 	};
 	return (
@@ -65,10 +101,35 @@ export default function LoanModal({
 				backdrop={"static"}
 				keyboard={false}
 				centered>
-				<ModalHeader toggle={toggle}>Create new Loan</ModalHeader>
+				<ModalHeader toggle={toggle}>Edit Loan</ModalHeader>
 				<ModalBody>
 					<Form>
-						<Row form>
+						<Label for='loanNumber'>Loan Number</Label>
+						<Input
+							type='number'
+							name='loanNumber'
+							id='loanNumber'
+							onChange={(value) => {
+								if (value.target.value > -1) {
+									setValidators({
+										...validators,
+										loanNumberIsValid: true,
+									});
+
+									setLoanNumber(value.target.value);
+								} else {
+									setValidators({
+										...validators,
+										loanNumberIsValid: false,
+									});
+									console.log(validators);
+								}
+							}}
+							placeholder='10000000'
+							value={loanNumber}
+							invalid={!validators.loanNumberIsValid}
+						/>
+						<Row form style={{ paddingTop: 10 }}>
 							<Col md={6}>
 								<FormGroup>
 									<Label for='branchId'>Branch Id</Label>
@@ -97,6 +158,7 @@ export default function LoanModal({
 												}
 											}}
 											placeholder='ie. 4324'
+											value={branchId}
 											invalid={
 												!validators.branchIdIsValid
 											}
@@ -136,6 +198,7 @@ export default function LoanModal({
 													});
 												}
 											}}
+											value={userId}
 											placeholder='ie. 4324'
 											invalid={!validators.userIdIsValid}
 										/>
@@ -157,9 +220,10 @@ export default function LoanModal({
 							id='loanType'
 							onChange={(value) =>
 								setLoanType(value.target.selectedIndex)
-							}>
-							{loanTypes.map((type) => (
-								<option key={type.id}>
+							}
+							value={loanType}>
+							{loanTypes.map((type, idx) => (
+								<option key={type.id} value={idx}>
 									{type.name === "LOAN_UNKNOWN"
 										? "None"
 										: formatLoanType(type.name)}
@@ -201,6 +265,7 @@ export default function LoanModal({
 												}
 											}}
 											placeholder='0'
+											value={amountDue}
 											invalid={
 												!validators.amountDueIsValid
 											}
@@ -242,6 +307,7 @@ export default function LoanModal({
 												}
 											}}
 											placeholder='0'
+											value={amount}
 											invalid={!validators.amountIsValid}
 										/>
 										<FormFeedback tooltip>
@@ -279,6 +345,7 @@ export default function LoanModal({
 													});
 												}
 											}}
+											value={interestRate}
 											invalid={
 												!validators.interestRateIsValid
 											}
@@ -298,8 +365,84 @@ export default function LoanModal({
 								</FormGroup>
 							</Col>
 						</Row>
-						<Label for='dueDate'>Due Date</Label>
+						<Label for='takenAt'>Date taken</Label>
+						<Row form>
+							<Col>
+								<Input
+									type='date'
+									name='dateTaken'
+									id='dateTaken'
+									onChange={(value) => {
+										if (
+											+value.target.valueAsDate <=
+											+Date.now()
+										) {
+											setValidators({
+												...validators,
+												dateTakenIsValid: true,
+											});
+											let time = new Date(takenAt);
+											let newTime = new Date(
+												value.target.value
+											);
+											newTime.setHours(time.getHours());
+											newTime.setMinutes(
+												time.getMinutes()
+											);
+											newTime.setSeconds(
+												time.getSeconds()
+											);
+											newTime.setMilliseconds(
+												time.getMilliseconds()
+											);
+											console.log(newTime);
+											setakenAt(newTime);
+										} else {
+											setValidators({
+												...validators,
+												dateTakenIsValid: false,
+											});
+										}
+									}}
+									value={(takenAt
+										? new Date(takenAt)
+										: new Date()
+									)
+										.toISOString()
+										.slice(0, 10)}
+									invalid={!validators.dateTakenIsValid}
+								/>
+							</Col>
+							<Col>
+								<Input
+									type='time'
+									name='timeTaken'
+									id='timeTaken'
+									onChange={(value) => {
+										console.log(value.target.valueAsDate);
+										let time = new Date(takenAt);
+										let newTime = value.target.valueAsDate;
 
+										newTime.setUTCFullYear(
+											time.getUTCFullYear()
+										);
+										newTime.setUTCMonth(time.getUTCMonth());
+										newTime.setUTCDate(time.getUTCDate());
+
+										setakenAt(newTime);
+									}}
+									value={new Date(takenAt).toLocaleTimeString(
+										"en-US",
+										{
+											hour: "2-digit",
+											minute: "2-digit",
+											hour12: false,
+										}
+									)}
+								/>
+							</Col>
+						</Row>
+						<Label for='dueDate'>Due Date</Label>
 						<Input
 							type='date'
 							name='dueDate'
@@ -318,6 +461,7 @@ export default function LoanModal({
 									});
 								}
 							}}
+							value={dueDate}
 							invalid={!validators.dueDateIsValid}
 						/>
 						<FormFeedback>
@@ -343,7 +487,7 @@ export default function LoanModal({
 								validators.dueDateIsValid
 							)
 						}>
-						Add loan
+						Submit
 					</Button>{" "}
 				</ModalFooter>
 			</Modal>

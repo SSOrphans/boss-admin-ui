@@ -3,6 +3,8 @@ import {
 	fetchAllLoans,
 	fetchAllLoansTypes,
 	addLoan,
+	deleteLoan,
+	editLoan,
 } from "../../services/loanService";
 
 const initialState = {
@@ -72,6 +74,28 @@ const loanSlice = createSlice({
 		},
 		[addLoan.rejected]: (state, action) => {
 			state.loan = {};
+			state.error = action.error.message;
+			state.status = action.error.name;
+		},
+		[editLoan.fulfilled]: (state, action) => {
+			state.status = action.meta.requestStatus;
+			state.error = null;
+		},
+		[editLoan.pending]: (state, action) => {
+			state.status = action.meta.requestStatus;
+		},
+		[editLoan.rejected]: (state, action) => {
+			state.error = action.error.message;
+			state.status = action.error.name;
+		},
+		[deleteLoan.fulfilled]: (state, action) => {
+			state.status = action.meta.requestStatus;
+			state.error = null;
+		},
+		[deleteLoan.pending]: (state, action) => {
+			state.status = action.meta.requestStatus;
+		},
+		[deleteLoan.rejected]: (state, action) => {
 			state.error = action.error.message;
 			state.status = action.error.name;
 		},

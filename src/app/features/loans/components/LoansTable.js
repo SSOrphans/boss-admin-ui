@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
 	Table,
-	Container,
 	ButtonDropdown,
 	DropdownToggle,
 	DropdownItem,
@@ -14,9 +13,13 @@ import {
 	addLoan,
 	fetchAllLoans,
 	fetchAllLoansTypes,
+	editLoan,
+	deleteLoan,
 } from "../../services/loanService";
 import PaginationComponent from "../../shared/components/PaginationComponent";
-import LoanModal from "./LoanModal";
+import CreateLoanModal from "./CreateLoanModal";
+import LoanTableRow from "./LoanTableRow";
+import EditLoanModal from "./EditLoanModal";
 
 export default function LoansTable() {
 	const [currentPage, setCurrentPage] = useState(0);
@@ -28,7 +31,9 @@ export default function LoansTable() {
 	);
 	const [dropdownOpen, setOpen] = useState(false);
 	const [dropdownValue, setDropdownValue] = useState("LOAN_UNKNOWN");
-	const [isModalOpen, setModalIsOpen] = useState(false);
+	const [isCreateModalOpen, setCreateModalIsOpen] = useState(false);
+	const [isEditModalOpen, setEditModalIsOpen] = useState(false);
+	const [loanToEdit, setloanToEdit] = useState({});
 	const dispatch = useDispatch();
 	const toggleDropdown = () => setOpen(!dropdownOpen);
 
@@ -43,7 +48,16 @@ export default function LoansTable() {
 				...sort,
 			})
 		);
-	}, [currentPage, sort, limit, dropdownValue, searchBar, dispatch]);
+	}, [
+		currentPage,
+		sort,
+		limit,
+		dropdownValue,
+		searchBar,
+		dispatch,
+		isCreateModalOpen,
+		isEditModalOpen,
+	]);
 
 	function selectSort(sortName) {
 		if (sort.sortBy === sortName) {
@@ -89,6 +103,15 @@ export default function LoansTable() {
 		dispatch(addLoan(loan));
 	}
 
+	function onEdit(e) {
+		setloanToEdit(e);
+		setEditModalIsOpen(true);
+	}
+
+	function onDelete(e) {
+		dispatch(deleteLoan(e.id));
+	}
+
 	function formatLoanType(type) {
 		let loanType = type?.toLowerCase().replace("loan_", "");
 		loanType = loanType[0]?.toUpperCase() + loanType?.substring(1);
@@ -103,12 +126,23 @@ export default function LoansTable() {
 				borderRadius: 5,
 				padding: 20,
 			}}>
-			<LoanModal
-				isModalOpen={isModalOpen}
-				setModalIsOpen={() => setModalIsOpen()}
+			<CreateLoanModal
+				isModalOpen={isCreateModalOpen}
+				setModalIsOpen={() => setCreateModalIsOpen()}
 				loanTypes={loanTypes}
 				formatLoanType={(type) => formatLoanType(type)}
 				onSubmit={(loan) => onCreateLoanSubmit(loan)}
+			/>
+			<EditLoanModal
+				isModalOpen={isEditModalOpen}
+				setModalIsOpen={() => setEditModalIsOpen()}
+				loanTypes={loanTypes}
+				loan={loanToEdit}
+				formatLoanType={(type) => formatLoanType(type)}
+				onSubmit={(loan) => {
+					console.log(loan);
+					dispatch(editLoan(loan));
+				}}
 			/>
 			<div className='form-group form-inline justify-content-between'>
 				<div>
@@ -122,7 +156,7 @@ export default function LoansTable() {
 					<Button
 						type='button'
 						color='primary'
-						onClick={() => setModalIsOpen(true)}>
+						onClick={() => setCreateModalIsOpen(true)}>
 						Add new loan
 					</Button>
 				</div>
@@ -223,57 +257,27 @@ export default function LoansTable() {
 							</div>
 						</th>
 						<th onClick={() => onSortChanged("amount")}>
-							<Container
+							<div
 								style={{
 									cursor: "pointer",
 								}}>
 								Total
 								{selectSort("amount")}
-							</Container>
+							</div>
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					{loans.map((loan) => {
-						return (
-							<tr key={loan.loanNumber.toString()}>
-								<td>{loan.loanNumber}</td>
-								<td>{loan.userId}</td>
-								<td>{loan.branchId}</td>
-								<td>{formatLoanType(loan.loanType)}</td>
-								<td>
-									{new Intl.NumberFormat("en-us", {
-										style: "currency",
-										currency: "USD",
-									}).format(loan.amountDue)}
-								</td>
-								<td>
-									{new Intl.NumberFormat("en-us", {
-										style: "percent",
-										minimumFractionDigits: 2,
-										maximumFractionDigits: 2,
-									}).format(loan.interestRate)}
-								</td>
-								<td>
-									{new Intl.DateTimeFormat("en-US").format(
-										new Date(loan.dueBy)
-									)}
-								</td>
-								<td>
-									{new Intl.DateTimeFormat("en-US", {
-										dateStyle: "short",
-										timeStyle: "short",
-									}).format(new Date(loan.takenAt))}
-								</td>
-								<td>
-									{new Intl.NumberFormat("en-us", {
-										style: "currency",
-										currency: "USD",
-									}).format(loan.amount)}
-								</td>
-							</tr>
-						);
-					})}
+					{loans.map((loan, idx) => (
+						<LoanTableRow
+							key={idx}
+							loan={loan}
+							onDelete={onDelete}
+							onEdit={onEdit}
+							formatLoanType={(type) =>
+								formatLoanType(type)
+							}></LoanTableRow>
+					))}
 				</tbody>
 			</Table>
 			<div className='form-inline justify-content-between'>

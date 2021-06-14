@@ -27,3 +27,13 @@ export const addLoan = createAsyncThunk("loans/addLoan", async (loan) => {
 	let url = new URL(`http://localhost:8080/api/loans`);
 	return await axios.post(url.href, loan);
 });
+
+export const editLoan = createAsyncThunk("loans/editLoan", async (loan) => {
+	let url = new URL(`http://localhost:8080/api/loans/${loan.id}`);
+	return await axios.put(url.href, loan);
+});
+
+export const deleteLoan = createAsyncThunk("loans/deleteLoan", async (id) => {
+	let url = new URL(`http://localhost:8080/api/loans/${id}`);
+	return await axios.delete(url.href);
+});
