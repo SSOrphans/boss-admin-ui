@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { CSVReader } from "react-papaparse";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
@@ -10,6 +11,12 @@ import { useHistory } from "react-router";
 
 import { CardFormInput } from "./card-form-inputs";
 import { CardTableHeaders } from "./card-table-headers";
+import {
+  validAccountId,
+  validCvv,
+  validNumberHash,
+  validPin,
+} from "../../../regex";
 
 export const CardCreate = () => {
   const currentState = useSelector((state) => state.cardCreate);
@@ -32,6 +39,44 @@ export const CardCreate = () => {
     dispatch(addCard(Object.fromEntries(card)));
   };
 
+  const onUpload = (csv) => {
+    const keys = csv[0].data;
+    const values = csv[1].data;
+    let newCard = Object.fromEntries(card);
+    keys.forEach((key, i) => (newCard[key] = values[i]));
+
+    newCard.activeSince = new Date();
+    newCard.expirationDate = new Date();
+
+    let newProps = Object.entries(props).map(([key, value]) => {
+      switch (key) {
+        case "isValidNumberHash":
+          return [key, validNumberHash.test(newCard.numberHash)];
+        case "isValidAccountId":
+          return [key, validAccountId.test(newCard.accountId)];
+        case "isValidCvv":
+          return [key, validCvv.test(newCard.cvv)];
+        case "isValidPin":
+          return [key, validPin.test(newCard.pin)];
+        case "isSavable":
+          if (
+            validNumberHash.test(newCard.numberHash) &&
+            validAccountId.test(newCard.accountId) &&
+            validCvv.test(newCard.cvv) &&
+            validPin.test(newCard.pin)
+          ) {
+            return [key, true];
+          }
+          return [key, false];
+        default:
+          return [key, value];
+      }
+    });
+
+    dispatch(validForm(Object.fromEntries(newProps)));
+    dispatch(updateCard(newCard));
+  };
+
   return (
     <div>
       <form onSubmit={onSave}>
@@ -45,7 +90,6 @@ export const CardCreate = () => {
               updateCard={updateCard}
             />
           </Table>
-        </Jumbotron>
         <div className="m-2">
           <Button
             type="submit"
@@ -60,7 +104,13 @@ export const CardCreate = () => {
           </span>
           <span className="text-danger p-3">{currentState.error}</span>
         </div>
+        </Jumbotron>
       </form>
+      <div className="d-flex mx-2">
+        <CSVReader onFileLoad={onUpload}>
+          <span className="font-weight-bold">Upload CSV File</span>
+        </CSVReader>
+      </div>
     </div>
   );
 };
