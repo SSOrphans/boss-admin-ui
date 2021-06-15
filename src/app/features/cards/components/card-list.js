@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle, Table } from "reactstrap";
+import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle, Table, Button } from "reactstrap";
 import { fetchCardList } from "../../services/card-service";
 import { changePage, setFilter, setKeyword, setLimit, setSortBy, toggleFilterDropdown } from "../slices/card-list-slice"
 import { FaFilter } from "react-icons/fa";
@@ -147,6 +147,7 @@ export const CardListComponent = () => {
           <option value='20'>20 items per page</option>
         </select>
       </div>
+      <Button href="/cards/add">Create New Card</Button>
     </>
   );
 };
