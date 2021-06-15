@@ -11,6 +11,7 @@ import {CardCreate} from "./app/features/cards/components/card-create";
 import {CardDetail} from "./app/features/cards/components/card-detail";
 import {LandingComponent} from "./app/features/home/components/LandingComponent";
 import {NavBarComponent} from "./app/features/shared/components/NavBarComponent";
+import { CardListComponent } from "./app/features/cards/components/card-list";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Switch>
             <Route path="/home" component={LandingComponent}/>
             <Route path="/loans" render={() => <LoansTable/>}/>
+            <Route path="/cards" component={CardListComponent}/>
             <Route exact path="/cards/add" component={CardCreate}/>
             <Route exact path="/cards/:cardId" component={CardDetail}/>
             <Route exact path='/accounts' component={ViewAccountListComponent}/>
