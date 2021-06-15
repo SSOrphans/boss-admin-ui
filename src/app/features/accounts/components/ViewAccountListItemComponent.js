@@ -14,9 +14,8 @@ export const ViewAccountListItemComponent = ({account, colLength}) => {
   }
   
   return [
-    
     <tr key={account.id} onClick={_toggleExpand}>
-      <td><a href={`/accounts/${account.id}`}>{account.id}</a></td>
+      <td>{account.id}</td>
       <td>{account.name}</td>
       <td>{account.balance}</td>
       <td>{account.accountType.replace("ACCOUNT_", "")}</td>
@@ -37,6 +36,4 @@ export const ViewAccountListItemComponent = ({account, colLength}) => {
       </tr>
     )
   ]
-  
-  
 }

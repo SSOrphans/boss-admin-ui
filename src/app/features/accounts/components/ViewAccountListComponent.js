@@ -118,6 +118,13 @@ export const ViewAccountListComponent = () => {
         </thead>
         <tbody>
         {renderAccounts()}
+        <tr key={"create"}>
+          <td colSpan={9}>
+            <div>
+              <a className="btn btn-primary" href={"/account/create"} color="primary">Create New</a>
+            </div>
+          </td>
+        </tr>
         </tbody>
       </Table>
       <div className="d-flex flex-row flex-wrap pagination-limit">

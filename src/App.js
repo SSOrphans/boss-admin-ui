@@ -11,6 +11,7 @@ import {CardCreate} from "./app/features/cards/components/card-create";
 import {CardDetail} from "./app/features/cards/components/card-detail";
 import {LandingComponent} from "./app/features/home/components/LandingComponent";
 import {NavBarComponent} from "./app/features/shared/components/NavBarComponent";
+import {CreateAccountComponent} from "./app/features/accounts/components/CreateAccountComponent";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route exact path="/cards/add" component={CardCreate}/>
             <Route exact path="/cards/:cardId" component={CardDetail}/>
             <Route exact path='/accounts' component={ViewAccountListComponent}/>
+            <Route exact path='/account/create' component={CreateAccountComponent}/>
             <Route path='/accounts/:id' component={ViewAccountComponent}/>
             <Redirect to="/home"/>
           </Switch>

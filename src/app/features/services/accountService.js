@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import {createAsyncThunk} from "@reduxjs/toolkit";
 
 export const fetchAccount = createAsyncThunk(
   "account/fetchAccount",
@@ -17,9 +17,18 @@ export const deleteAccount = createAsyncThunk(
 
 export const fetchAccountList = createAsyncThunk(
   "accounts/fetchAccountList",
-  async (params= {}) => {
+  async (params = {}) => {
     return await axios.get(`http://localhost:8080/api/admin/v1/accounts/`,
       {params}
     );
+  }
+)
+
+export const createAccount = createAsyncThunk(
+  "account/createAccount",
+  async (params) => {
+    console.log(params)
+    return await axios.post(`http://localhost:8080/api/admin/v1/accounts/`,
+      params)
   }
 )
