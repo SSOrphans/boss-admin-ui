@@ -22,7 +22,7 @@ function App() {
           <Switch>
             <Route path="/home" component={LandingComponent}/>
             <Route path="/loans" render={() => <LoansTable/>}/>
-            <Route path="/cards" component={CardListComponent}/>
+            <Route exact path="/cards" component={CardListComponent}/>
             <Route exact path="/cards/add" component={CardCreate}/>
             <Route exact path="/cards/:cardId" component={CardDetail}/>
             <Route exact path='/accounts' component={ViewAccountListComponent}/>
