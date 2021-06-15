@@ -11,7 +11,6 @@ export const fetchAccount = createAsyncThunk(
 export const deleteAccount = createAsyncThunk(
   "account/deleteAccount",
   async ({id}) => {
-    
     return await axios.delete(`http://localhost:8080/api/admin/v1/accounts/${id}`);
   }
 );

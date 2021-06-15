@@ -6,6 +6,7 @@ import {fetchAccountList} from "../../services/accountService";
 import {changePage, setFilter, setKeyword, setLimit, setSortBy, toggleFilterDropdown} from "../slices/accountListSlice"
 import {FaFilter} from "react-icons/fa";
 import PaginationComponent from "../../shared/components/PaginationComponent";
+import {ViewAccountListItemComponent} from "./ViewAccountListItemComponent";
 
 export const ViewAccountListComponent = () => {
   const currentState = useSelector((state) => state.accountList);
@@ -42,7 +43,7 @@ export const ViewAccountListComponent = () => {
   }
   
   const _setLimit = (limit) => {
-    const {payload} = dispatch(setLimit({limit, offset:0}));
+    const {payload} = dispatch(setLimit({limit, offset: 0}));
     dispatch(fetchAccountList({...currentState.accountPage.options, ...payload}))
   }
   
@@ -50,7 +51,7 @@ export const ViewAccountListComponent = () => {
     newPage = newPage % currentState.accountPage.pages;
     const {payload} = dispatch(changePage({offset: newPage}))
     dispatch(fetchAccountList({...currentState.accountPage.options, ...payload}))
-  
+    
   }
   
   const toggleDropdown = () => {
@@ -70,19 +71,8 @@ export const ViewAccountListComponent = () => {
       return;
     return currentState.accountPage.accounts.map(
       account => (
-        <tr key={account.id}>
-          <td><a href={`/accounts/${account.id}`}>{account.id}</a></td>
-          <td>{account.name}</td>
-          <td>{account.balance}</td>
-          <td>{account.accountType.replace("ACCOUNT_", "")}</td>
-          <td>{account.opened}</td>
-          <td>{account.closed ? account.closed : "-"}</td>
-          <td>{account.confirmed ? "yes" : "no"}</td>
-          <td>{account.active ? "yes" : "no"}</td>
-          <td>{account.users.map(user => user.username)}</td>
-        </tr>
-      )
-    )
+        <ViewAccountListItemComponent key={account.id} account={account} colLength={9}/>
+      ))
   };
   
   return (
