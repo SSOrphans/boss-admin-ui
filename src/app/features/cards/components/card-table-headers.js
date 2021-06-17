@@ -1,21 +1,19 @@
 import React from "react";
 
 export const CardTableHeaders = ({ currentState }) => {
-  const props = currentState.props;
-
   return (
     <thead>
       <tr>
         <th hidden={!currentState.card.id}>ID</th>
         <th>
           Number Hash
-          <span className="text-danger" hidden={props.isValidNumberHash}>
+          <span className="text-danger" hidden={currentState.isValidNumberHash}>
             **
           </span>
         </th>
         <th>
           Account ID
-          <span className="text-danger" hidden={props.isValidAccountId}>
+          <span className="text-danger" hidden={currentState.isValidAccountId}>
             **
           </span>
         </th>
@@ -24,13 +22,13 @@ export const CardTableHeaders = ({ currentState }) => {
         <th>Expiration Date</th>
         <th>
           PIN
-          <span className="text-danger" hidden={props.isValidPin}>
+          <span className="text-danger" hidden={currentState.isValidPin}>
             **
           </span>
         </th>
         <th>
           CVV
-          <span className="text-danger" hidden={props.isValidCvv}>
+          <span className="text-danger" hidden={currentState.isValidCvv}>
             **
           </span>
         </th>
