@@ -14,6 +14,7 @@ import {
   viewCardCreate,
   viewCardCsv,
 } from "../slices/card-main-slice";
+import { addCardToList } from "../slices/card-csv-slice";
 import {
   changePage,
   setFilter,
@@ -110,12 +111,14 @@ export const CardListComponent = () => {
   const onUpload = (e) => {
     let file = e.target.files[0];
     Papa.parse(file, {
+      header: true,
       complete: function (result) {
-        console.log(result.data);
-        const keys = result.data[0];
-        const values = result.data;
-        let card = Object.fromEntries(keys.map((_, i) => [keys[i], values[i]]));
-        console.log(card);
+        result.data.forEach((card, i) => {
+          if (i < result.data.length - 1) {
+            dispatch(addCardToList(card));
+          }
+        });
+
         dispatch(viewCardCsv(true));
         dispatch(viewCardList(false));
       },

@@ -18,6 +18,7 @@ export const CardDetailFields = () => {
         return <td key={key}>{value.toString()}</td>;
     }
   });
+
   return (
     <tbody>
       <tr>{fields}</tr>
