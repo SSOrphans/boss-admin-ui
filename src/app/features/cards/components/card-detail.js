@@ -19,7 +19,7 @@ import { CardTableHeaders } from "./card-table-headers";
 import { CardDetailFields } from "./card-detail-fields";
 import { CardConfirmModal } from "./card-confirm-modal";
 
-export const CardDetail = ({ cardId }) => {
+export const CardDetail = () => {
   const currentState = useSelector((state) => state.cardDetail);
   const dispatch = useDispatch();
   const card = Object.entries(currentState.card).map(([key, value]) => [
@@ -64,8 +64,8 @@ export const CardDetail = ({ cardId }) => {
           <h4 className="pb-3">Card Details</h4>
           <Table className="table-sm">
             <CardTableHeaders currentState={currentState} />
-            {!currentState.isClickable && <CardDetailFields />}
-            {currentState.isClickable ? (
+            {!currentState.props.isClickable && <CardDetailFields />}
+            {currentState.props.isClickable ? (
               <CardFormInput
                 currentState={currentState}
                 validForm={validForm}
@@ -75,7 +75,7 @@ export const CardDetail = ({ cardId }) => {
           </Table>
         </Jumbotron>
         <div className="m-2">
-          {!currentState.isClickable ? (
+          {!currentState.props.isClickable ? (
             <>
               <Button
                 disabled={
@@ -99,17 +99,17 @@ export const CardDetail = ({ cardId }) => {
               <CardConfirmModal currentState={currentState} />
             </>
           ) : null}
-          {currentState.isClickable ? (
+          {currentState.props.isClickable ? (
             <Button
               type="submit"
               disabled={
-                !currentState.isSavable || currentState.status === "pending"
+                !currentState.props.isSavable || currentState.status === "pending"
               }
             >
               Save
             </Button>
           ) : null}
-          <span className="text-danger p-3" hidden={currentState.isSavable}>
+          <span className="text-danger p-3" hidden={currentState.props.isSavable}>
             Invalid form: Inputs can only contain numbers. Number hash has a
             maximum of 64 characters. PINs require 4 numbers, and CVVs require 3
             numbers.

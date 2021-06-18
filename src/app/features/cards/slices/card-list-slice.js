@@ -45,6 +45,7 @@ export const cardListSlice = createSlice({
   extraReducers: {
     [fetchCardList.fulfilled]: (state, action) => {
       const data = action.payload.data;
+      console.log(action.payload)
       state.cardPage = {...state.cardPage, ...data, status: "fetched" };
     },
     [fetchCardList.rejected]: (state, action) => {

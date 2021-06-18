@@ -13,8 +13,10 @@ import {
   viewCardList,
   viewCardCreate,
   viewCardCsv,
+  viewCardDetail,
 } from "../slices/card-main-slice";
 import { addCardToList } from "../slices/card-csv-slice";
+import { setCardId } from "../slices/card-detail-slice";
 import {
   changePage,
   setFilter,
@@ -87,10 +89,8 @@ export const CardListComponent = () => {
   const renderCards = () => {
     if (currentState.cardPage.status === "init") return;
     return currentState.cardPage.cards.map((card) => (
-      <tr key={card.id}>
-        <td>
-          <a href={`/cards/${card.id}`}>{card.id}</a>
-        </td>
+      <tr key={card.id} onClick={(e) => onCardDetail(e, card.id)}>
+        <td>{card.id}</td>
         <td>{card.type}</td>
         <td>{card.lastFour}</td>
         <td>{card.created}</td>
@@ -124,6 +124,13 @@ export const CardListComponent = () => {
       },
     });
   };
+
+  function onCardDetail(e, id) {
+    e.preventDefault();
+    dispatch(setCardId(id));
+    dispatch(viewCardDetail(true));
+    dispatch(viewCardList(false));
+  }
 
   return (
     <>

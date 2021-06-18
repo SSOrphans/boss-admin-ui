@@ -20,13 +20,15 @@ const initialState = {
     stolen: "false",
     cardType: "CARD_PLAIN",
   },
-  isSavable: true,
-  isValidPin: true,
-  isValidCvv: true,
-  isValidNumberHash: true,
-  isValidAccountId: true,
-  isClickable: false,
-  showConfirmModal: false,
+  props: {
+    isSavable: true,
+    isValidPin: true,
+    isValidCvv: true,
+    isValidNumberHash: true,
+    isValidAccountId: true,
+    isClickable: false,
+    showConfirmModal: false,
+  },
   status: "init",
   error: null,
 };
@@ -42,20 +44,16 @@ export const cardDetailSlice = createSlice({
       state.card.id = action.payload;
     },
     editCard(state, action) {
-      state.isClickable = action.payload;
+      state.props.isClickable = action.payload;
     },
     validForm(state, action) {
-      state.isSavable = action.payload.isSavable;
-      state.isValidPin = action.payload.isValidPin;
-      state.isValidCvv = action.payload.isValidCvv;
-      state.isValidNumberHash = action.payload.isValidNumberHash;
-      state.isValidAccountId = action.payload.isValidAccountId;
+      state.props = action.payload;
     },
     updateCard(state, action) {
       state.card = action.payload;
     },
     confirmDelete(state, action) {
-      state.showConfirmModal = action.payload;
+      state.props.showConfirmModal = action.payload;
     },
   },
   extraReducers: {
@@ -77,7 +75,7 @@ export const cardDetailSlice = createSlice({
       state.status = action.error.name;
     },
     [saveCardDetail.fulfilled]: (state, action) => {
-      state.isClickable = false;
+      state.props.isClickable = false;
       state.status = action.type;
       state.error = null;
     },
@@ -108,8 +106,8 @@ export const {
   updateCard,
   canSave,
   confirmDelete,
-  setCardId,
   setStatus,
+  setCardId,
 } = cardDetailSlice.actions;
 
 export default cardDetailSlice.reducer;

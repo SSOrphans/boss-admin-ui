@@ -21,8 +21,8 @@ export const CardCreate = () => {
   ]);
 
   useEffect(() => {
-    if (currentState.cardId) {
-      dispatch(setCardId(currentState.cardId));
+    if (currentState.props.cardId) {
+      dispatch(setCardId(currentState.props.cardId));
       dispatch(viewCardDetail(true));
       dispatch(viewCardCreate(false));
     }
@@ -50,12 +50,12 @@ export const CardCreate = () => {
             <Button
               type="submit"
               disabled={
-                !currentState.isSavable || currentState.status === "pending"
+                !currentState.props.isSavable || currentState.status === "pending"
               }
             >
               Add card
             </Button>
-            <span className="text-danger p-3" hidden={currentState.isSavable}>
+            <span className="text-danger p-3" hidden={currentState.props.isSavable}>
               Invalid form: Inputs can only contain numbers. Number hash has a
               maximum of 64 characters. PINs require 4 numbers, and CVVs require
               3 numbers.

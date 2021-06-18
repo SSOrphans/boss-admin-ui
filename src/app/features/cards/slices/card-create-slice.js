@@ -14,12 +14,14 @@ const initialState = {
     stolen: "false",
     cardType: "CARD_PLAIN",
   },
-  cardId: null,
-  isSavable: false,
-  isValidPin: false,
-  isValidCvv: false,
-  isValidNumberHash: false,
-  isValidAccountId: false,
+  props: {
+    isSavable: false,
+    isValidPin: false,
+    isValidCvv: false,
+    isValidNumberHash: false,
+    isValidAccountId: false,
+    cardId: null,
+  },
   status: "init",
   error: null,
 };
@@ -29,11 +31,7 @@ export const cardCreateSlice = createSlice({
   initialState,
   reducers: {
     validForm(state, action) {
-      state.isSavable = action.payload.isSavable;
-      state.isValidPin = action.payload.isValidPin;
-      state.isValidCvv = action.payload.isValidCvv;
-      state.isValidNumberHash = action.payload.isValidNumberHash;
-      state.isValidAccountId = action.payload.isValidAccountId;
+      state.props = action.payload;
     },
     updateCard(state, action) {
       state.card = action.payload;
@@ -41,7 +39,7 @@ export const cardCreateSlice = createSlice({
   },
   extraReducers: {
     [addCard.fulfilled]: (state, action) => {
-      state.cardId = action.payload.data.id;
+      state.props.cardId = action.payload.data.id;
       state.status = action.meta.requestStatus;
       state.error = null;
     },

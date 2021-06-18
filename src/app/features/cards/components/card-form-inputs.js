@@ -11,6 +11,7 @@ import {
 
 export const CardFormInput = ({currentState, validForm, updateCard}) => {
   const dispatch = useDispatch();
+  const props = currentState.props;
   const card = Object.entries(currentState.card).map(([key, value]) => [
     key,
     value,
@@ -24,7 +25,7 @@ export const CardFormInput = ({currentState, validForm, updateCard}) => {
       newCard[name] = date;
     }
 
-    let newState = Object.entries(currentState).map(([key, value]) => {
+    let newProps = Object.entries(props).map(([key, value]) => {
       switch (key) {
         case "isValidNumberHash":
           return [key, validNumberHash.test(newCard.numberHash)];
@@ -49,7 +50,7 @@ export const CardFormInput = ({currentState, validForm, updateCard}) => {
       }
     });
 
-    dispatch(validForm(Object.fromEntries(newState)));
+    dispatch(validForm(Object.fromEntries(newProps)));
     dispatch(updateCard(newCard));
   }
 
