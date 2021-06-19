@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import "./ViewAccountListComponent.css";
+import styles from "./ViewAccountListComponent.module.css";
 import {ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle, Table} from "reactstrap"
 import {useDispatch, useSelector} from "react-redux";
 import {fetchAccountList} from "../../services/accountService";
@@ -70,16 +70,16 @@ export const ViewAccountListComponent = () => {
       return;
     return currentState.accountPage.accounts.map(
       account => (
-        <tr key={account.id}>
-          <td><a href={`/accounts/${account.id}`}>{account.id}</a></td>
-          <td>{account.name}</td>
-          <td>{account.balance}</td>
-          <td>{account.accountType.replace("ACCOUNT_", "")}</td>
-          <td>{account.opened}</td>
-          <td>{account.closed ? account.closed : "-"}</td>
-          <td>{account.confirmed ? "yes" : "no"}</td>
-          <td>{account.active ? "yes" : "no"}</td>
-          <td>{account.users.map(user => user.username)}</td>
+        <tr className={styles.tr} key={account.id}>
+          <td className={styles.td}><a href={`/accounts/${account.id}`}>{account.id}</a></td>
+          <td className={styles.td}>{account.name}</td>
+          <td className={styles.td}>{account.balance}</td>
+          <td className={styles.td}>{account.accountType.replace("ACCOUNT_", "")}</td>
+          <td className={styles.td}>{account.opened}</td>
+          <td className={styles.td}>{account.closed ? account.closed : "-"}</td>
+          <td className={styles.td}>{account.confirmed ? "yes" : "no"}</td>
+          <td className={styles.td}>{account.active ? "yes" : "no"}</td>
+          <td className={styles.td}>{account.users.map(user => user.username)}</td>
         </tr>
       )
     )
@@ -113,8 +113,8 @@ export const ViewAccountListComponent = () => {
         </ButtonDropdown>
       </div>
       <Table striped bordered dark>
-        <thead>
-        <tr>
+        <thead className={styles.thead}>
+        <tr className={styles.tr}>
           <th onClick={() => _setSortBy("id")}>ID</th>
           <th onClick={() => _setSortBy("name")}>Name</th>
           <th onClick={() => _setSortBy("balance")}>Balance</th>
@@ -126,7 +126,7 @@ export const ViewAccountListComponent = () => {
           <th onClick={() => _setSortBy("id")}>Users</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody className={styles.tbody}>
         {renderAccounts()}
         </tbody>
       </Table>
