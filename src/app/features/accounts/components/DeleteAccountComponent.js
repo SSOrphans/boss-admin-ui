@@ -1,18 +1,16 @@
 import React from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {Button} from "reactstrap";
+import {useDispatch} from "react-redux";
 import {deleteAccount} from "../../services/accountService";
 
-export const DeleteAccountComponent = () => {
-  const currentState = useSelector((state) => state.account);
+export const DeleteAccountComponent = ({accountId}) => {
   const dispatch = useDispatch();
   
   const onDeleteAccount = () => {
-    const id = currentState.account.id;
+    const id = accountId;
     dispatch(deleteAccount({id}));
   }
   
   return (
-    <a className="btn btn-danger" href={"/accounts"} color="danger" onClick={onDeleteAccount} hidden={currentState.account.status !== "fetched"}>Delete</a>
+    <a className="btn btn-danger" href={"/accounts"} color="danger" onClick={onDeleteAccount}>Delete</a>
   )
 }

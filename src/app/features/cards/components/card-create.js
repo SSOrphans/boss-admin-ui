@@ -6,7 +6,8 @@ import Table from "react-bootstrap/Table";
 
 import { addCard } from "../../services/card-service";
 import { validForm, updateCard } from "../slices/card-create-slice";
-import { useHistory } from "react-router";
+import { setCardId } from "../slices/card-detail-slice";
+import { viewCardCreate, viewCardDetail } from "../slices/card-main-slice";
 
 import { CardFormInput } from "./card-form-inputs";
 import { CardTableHeaders } from "./card-table-headers";
@@ -14,16 +15,16 @@ import { CardTableHeaders } from "./card-table-headers";
 export const CardCreate = () => {
   const currentState = useSelector((state) => state.cardCreate);
   const dispatch = useDispatch();
-  const history = useHistory();
-  const props = currentState.props;
   const card = Object.entries(currentState.card).map(([key, value]) => [
     key,
     value,
   ]);
 
   useEffect(() => {
-    if (currentState.props.cardId) {
-      history.push(`/cards/${currentState.props.cardId}`);
+    if (currentState.cardId) {
+      dispatch(setCardId(currentState.cardId));
+      dispatch(viewCardDetail(true));
+      dispatch(viewCardCreate(false));
     }
   });
 
@@ -45,21 +46,23 @@ export const CardCreate = () => {
               updateCard={updateCard}
             />
           </Table>
+          <div className="m-2">
+            <Button
+              type="submit"
+              disabled={
+                !currentState.isSavable || currentState.status === "pending"
+              }
+            >
+              Add card
+            </Button>
+            <span className="text-danger p-3" hidden={currentState.isSavable}>
+              Invalid form: Inputs can only contain numbers. Number hash has a
+              maximum of 64 characters. PINs require 4 numbers, and CVVs require
+              3 numbers.
+            </span>
+            <span className="text-danger p-3">{currentState.error}</span>
+          </div>
         </Jumbotron>
-        <div className="m-2">
-          <Button
-            type="submit"
-            disabled={!props.isSavable || currentState.status === "pending"}
-          >
-            Add card
-          </Button>
-          <span className="text-danger p-3" hidden={props.isSavable}>
-            Invalid form: Inputs can only contain numbers. Number hash has a
-            maximum of 64 characters. PINs require 4 numbers, and CVVs require 3
-            numbers.
-          </span>
-          <span className="text-danger p-3">{currentState.error}</span>
-        </div>
       </form>
     </div>
   );

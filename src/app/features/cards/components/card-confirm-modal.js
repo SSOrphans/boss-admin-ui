@@ -9,7 +9,6 @@ import Button from "react-bootstrap/Button";
 
 export const CardConfirmModal = ({ currentState }) => {
   const dispatch = useDispatch();
-  const props = currentState.props;
 
   const onCancel = () => {
     dispatch(confirmDelete(false));
@@ -21,7 +20,7 @@ export const CardConfirmModal = ({ currentState }) => {
   };
 
   return (
-    <Modal centered animation={false} show={props.showConfirmModal}>
+    <Modal centered animation={false} show={currentState.showConfirmModal}>
       <Modal.Body>
         <Modal.Title>Confirm delete?</Modal.Title>
       </Modal.Body>

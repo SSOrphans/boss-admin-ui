@@ -1,11 +1,12 @@
 import React, {useEffect} from "react";
-import "./ViewAccountListComponent.css";
+import styles from "./ViewAccountListComponent.module.css";
 import {ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle, Table} from "reactstrap"
 import {useDispatch, useSelector} from "react-redux";
 import {fetchAccountList} from "../../services/accountService";
 import {changePage, setFilter, setKeyword, setLimit, setSortBy, toggleFilterDropdown} from "../slices/accountListSlice"
 import {FaFilter} from "react-icons/fa";
 import PaginationComponent from "../../shared/components/PaginationComponent";
+import {ViewAccountListItemComponent} from "./ViewAccountListItemComponent";
 
 export const ViewAccountListComponent = () => {
   const currentState = useSelector((state) => state.accountList);
@@ -42,7 +43,7 @@ export const ViewAccountListComponent = () => {
   }
   
   const _setLimit = (limit) => {
-    const {payload} = dispatch(setLimit({limit, offset:0}));
+    const {payload} = dispatch(setLimit({limit, offset: 0}));
     dispatch(fetchAccountList({...currentState.accountPage.options, ...payload}))
   }
   
@@ -50,7 +51,7 @@ export const ViewAccountListComponent = () => {
     newPage = newPage % currentState.accountPage.pages;
     const {payload} = dispatch(changePage({offset: newPage}))
     dispatch(fetchAccountList({...currentState.accountPage.options, ...payload}))
-  
+    
   }
   
   const toggleDropdown = () => {
@@ -70,24 +71,13 @@ export const ViewAccountListComponent = () => {
       return;
     return currentState.accountPage.accounts.map(
       account => (
-        <tr key={account.id}>
-          <td><a href={`/accounts/${account.id}`}>{account.id}</a></td>
-          <td>{account.name}</td>
-          <td>{account.balance}</td>
-          <td>{account.accountType.replace("ACCOUNT_", "")}</td>
-          <td>{account.opened}</td>
-          <td>{account.closed ? account.closed : "-"}</td>
-          <td>{account.confirmed ? "yes" : "no"}</td>
-          <td>{account.active ? "yes" : "no"}</td>
-          <td>{account.users.map(user => user.username)}</td>
-        </tr>
-      )
-    )
+        <ViewAccountListItemComponent key={account.id} account={account} colLength={9}/>
+      ))
   };
   
   return (
     <>
-      <div className='form-group form-inline search-filter'>
+      <div className={"form-group form-inline " + styles.searchfilter}>
         <input
           className='form-control'
           type='text'
@@ -112,25 +102,32 @@ export const ViewAccountListComponent = () => {
           </DropdownMenu>
         </ButtonDropdown>
       </div>
-      <Table striped bordered dark>
-        <thead>
-        <tr>
-          <th onClick={() => _setSortBy("id")}>ID</th>
-          <th onClick={() => _setSortBy("name")}>Name</th>
-          <th onClick={() => _setSortBy("balance")}>Balance</th>
-          <th onClick={() => _setSortBy("accountType")}>Type</th>
-          <th onClick={() => _setSortBy("opened")}>Open Date</th>
-          <th onClick={() => _setSortBy("closed")}>Close Date</th>
-          <th onClick={() => _setSortBy("confirmed")}>Confirmed</th>
-          <th onClick={() => _setSortBy("active")}>Active</th>
-          <th onClick={() => _setSortBy("id")}>Users</th>
+      <Table className={styles.table} striped bordered dark>
+        <thead className={styles.thead}>
+        <tr className={styles.tr}>
+          <th className={styles.th} onClick={() => _setSortBy("id")}>ID</th>
+          <th className={styles.th} onClick={() => _setSortBy("name")}>Name</th>
+          <th className={styles.th} onClick={() => _setSortBy("balance")}>Balance</th>
+          <th className={styles.th} onClick={() => _setSortBy("accountType")}>Type</th>
+          <th className={styles.th} onClick={() => _setSortBy("opened")}>Open Date</th>
+          <th className={styles.th} onClick={() => _setSortBy("closed")}>Close Date</th>
+          <th className={styles.th} onClick={() => _setSortBy("confirmed")}>Confirmed</th>
+          <th className={styles.th} onClick={() => _setSortBy("active")}>Active</th>
+          <th className={styles.th} onClick={() => _setSortBy("id")}>Users</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody className={styles.tbody}>
         {renderAccounts()}
+        <tr className={styles.tr} key={"create"}>
+          <td className={styles.td} colSpan={9}>
+            <div>
+              <a className="btn btn-primary" href={"/account/create"} color="primary">Create New</a>
+            </div>
+          </td>
+        </tr>
         </tbody>
       </Table>
-      <div className="d-flex flex-row flex-wrap pagination-limit">
+      <div className={"d-flex flex-row flex-wrap " + styles.paginationLimit}>
         <PaginationComponent
           totalPages={currentState.accountPage.pages}
           currentPage={currentState.accountPage.options.offset}

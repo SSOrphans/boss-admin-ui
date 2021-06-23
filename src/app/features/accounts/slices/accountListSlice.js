@@ -8,7 +8,8 @@ const accountDefaultState = {
     options: {limit: 5, sortBy: "id", keyword: "", filter: "", offset: 0, sortDirection: "DESC"},
     isFilterDropdownOpen: false,
     filter: "ACCOUNT_INVALID",
-    status: "init"
+    status: "init",
+    expanded: false
   }
 }
 

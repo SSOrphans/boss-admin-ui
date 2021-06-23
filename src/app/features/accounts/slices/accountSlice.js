@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {fetchAccount} from "../../services/accountService";
+import {fetchAccount, createAccount} from "../../services/accountService";
 
 const accountDefaultState = {
   account: {
@@ -32,6 +32,12 @@ export const accountSlice = createSlice(
       },
       [fetchAccount.rejected]: (state, action) => {
         state.account.status = "error";
+      },
+      [createAccount.fulfilled]: (state, action) =>{
+        console.log("hi")
+      },
+      [createAccount.rejected]: (state, action) =>{
+        console.log("error")
       }
     }
   }

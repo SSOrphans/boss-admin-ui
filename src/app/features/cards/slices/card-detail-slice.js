@@ -7,7 +7,7 @@ import {
 
 const initialState = {
   card: {
-    id: "-",
+    id: 0,
     numberHash: "-",
     accountId: "-",
     created: new Date(),
@@ -20,15 +20,13 @@ const initialState = {
     stolen: "false",
     cardType: "CARD_PLAIN",
   },
-  props: {
-    isSavable: true,
-    isValidPin: true,
-    isValidCvv: true,
-    isValidNumberHash: true,
-    isValidAccountId: true,
-    isClickable: false,
-    showConfirmModal: false,
-  },
+  isSavable: true,
+  isValidPin: true,
+  isValidCvv: true,
+  isValidNumberHash: true,
+  isValidAccountId: true,
+  isClickable: false,
+  showConfirmModal: false,
   status: "init",
   error: null,
 };
@@ -37,17 +35,27 @@ export const cardDetailSlice = createSlice({
   name: "cardDetails",
   initialState,
   reducers: {
+    setStatus(state, action) {
+      state.status = action.payload;
+    },
+    setCardId(state, action) {
+      state.card.id = action.payload;
+    },
     editCard(state, action) {
-      state.props.isClickable = action.payload;
+      state.isClickable = action.payload;
     },
     validForm(state, action) {
-      state.props = action.payload;
+      state.isSavable = action.payload.isSavable;
+      state.isValidPin = action.payload.isValidPin;
+      state.isValidCvv = action.payload.isValidCvv;
+      state.isValidNumberHash = action.payload.isValidNumberHash;
+      state.isValidAccountId = action.payload.isValidAccountId;
     },
     updateCard(state, action) {
       state.card = action.payload;
     },
-    confirmDelete(state, action){
-      state.props.showConfirmModal = action.payload;
+    confirmDelete(state, action) {
+      state.showConfirmModal = action.payload;
     },
   },
   extraReducers: {
@@ -69,7 +77,7 @@ export const cardDetailSlice = createSlice({
       state.status = action.error.name;
     },
     [saveCardDetail.fulfilled]: (state, action) => {
-      state.props.isClickable = false;
+      state.isClickable = false;
       state.status = action.type;
       state.error = null;
     },
@@ -94,7 +102,14 @@ export const cardDetailSlice = createSlice({
   },
 });
 
-export const { editCard, validForm, updateCard, canSave, confirmDelete } =
-  cardDetailSlice.actions;
+export const {
+  editCard,
+  validForm,
+  updateCard,
+  canSave,
+  confirmDelete,
+  setCardId,
+  setStatus,
+} = cardDetailSlice.actions;
 
 export default cardDetailSlice.reducer;
