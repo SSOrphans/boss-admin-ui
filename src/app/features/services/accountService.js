@@ -24,3 +24,12 @@ export const fetchAccountList = createAsyncThunk(
     );
   }
 )
+
+export const createAccount = createAsyncThunk(
+  "account/createAccount",
+  async (params) => {
+    console.log(params)
+    return await axios.post(`${process.env.REACT_APP_ACCOUNT_URL}/api/admin/v1/accounts/`,
+      params)
+  }
+)

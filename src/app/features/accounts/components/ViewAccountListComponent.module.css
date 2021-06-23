@@ -1,10 +1,10 @@
 
-.pagination-limit, .search-filter {
+.paginationLimit, .searchfilter {
     justify-content: space-between;
 }
 
 @media only screen and (max-width: 440px) {
-    .pagination-limit, .search-filter {
+    .pagination-limit, .searchfilter {
         justify-content: center;
     }
 }
