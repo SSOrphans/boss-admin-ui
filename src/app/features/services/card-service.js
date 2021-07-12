@@ -3,7 +3,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchCardList = createAsyncThunk("cards/getList", async () => {
   console.log("Is called!");
-  return (await axios.get(`http://localhost:8080/api/v1/cards`)).data;
+  const token = localStorage.getItem("clientPass");
+  const headers = { Authorization: "Bearer " + token };
+  return (await axios.get(`http://localhost:8080/api/v1/cards`, { headers })).data;
 });
 
 export const getCardDetail = createAsyncThunk("cards/getCard", async (id) => {

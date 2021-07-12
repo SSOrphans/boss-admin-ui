@@ -8,7 +8,7 @@ export const HomeComponent = () => {
     <div className="d-flex flex-row justify-content-around flex-wrap">
       <CardComponent title="User Directory" description={stubbedText} redirectTo={"#"}/>
       <CardComponent title="Account Directory" description={stubbedText} redirectTo={"/accounts"}/>
-      <CardComponent title="Card Directory" description={stubbedText} redirectTo={"#"}/>
+      <CardComponent title="Card Directory" description={stubbedText} redirectTo={"/cards"}/>
       <CardComponent title="Loan Directory" description={stubbedText} redirectTo={"/loans"}/>
       <CardComponent title="Transaction Directory" description={stubbedText} redirectTo={"#"}/>
     </div>

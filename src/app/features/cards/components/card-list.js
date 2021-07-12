@@ -22,6 +22,9 @@ export const CardListComponent = () => {
   });
 
   const _convertDate = (datems) => {
+    console.log(`Date MS: ${datems}`);
+    if (datems === undefined)
+      return "Invalid";
     const d = new Date(datems).toISOString();
     return d.substr(0, d.indexOf('T'));
   };
@@ -86,7 +89,7 @@ export const CardListComponent = () => {
         <td>{ card.type }</td>
         <td>{ card.lastFour }</td>
         <td>{ _convertDate(card.created) }</td>
-        <td>{ _convertDate(card.activatedSince) }</td>
+        <td>{ _convertDate(card.activeSince) }</td>
         <td>{ _convertExpiry(card.expirationDate) }</td>
         <td>{ card.confirmed ? "yes" : "no" }</td>
         <td>{ card.active ? "yes" : "no" }</td>

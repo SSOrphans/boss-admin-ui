@@ -7,7 +7,7 @@ import { fetchCardList } from "../../services/card-service";
 const cardDefaultState = {
   cardPage: {
     cards: [
-      { id: 1, type: 0, lastFour: "2311", accountId: 1, created: 1546600672000, activatedSince: 1546600672000, expirationDate: 1735689600000, confirmed: true, active: true, stolen: false }
+      // { id: 1, type: 0, lastFour: "2311", accountId: 1, created: 1546600672000, activatedSince: 1546600672000, expirationDate: 1735689600000, confirmed: true, active: true, stolen: false }
     ],
     page: 1,
     pages: 1,
@@ -44,8 +44,9 @@ export const cardListSlice = createSlice({
   },
   extraReducers: {
     [fetchCardList.fulfilled]: (state, action) => {
-      const data = action.payload.data;
-      state.cardPage = {...state.cardPage, ...data, status: "fetched" };
+      console.log(action.payload);
+      const cards = action.payload;
+      state.cardPage = {...state.cardPage, cards, status: "fetched" };
     },
     [fetchCardList.rejected]: (state, action) => {
       state.cardPage.status = "error";
