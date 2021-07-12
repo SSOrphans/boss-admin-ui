@@ -21,6 +21,21 @@ export const CardListComponent = () => {
       dispatch(fetchCardList());
   });
 
+  const _convertDate = (datems) => {
+    const d = new Date(datems).toISOString();
+    return d.substr(0, d.indexOf('T'));
+  };
+
+  const _convertExpiry = (datems) => {
+    const date = new Date(datems);
+    let month = '' + date.getMonth();
+    const year = ('' + date.getFullYear()).substr(2);
+    if (month.length < 2)
+      month = '0' + month;
+
+    return [month, year].join('/');
+  };
+
   const _setSortBy = (sortBy) => {
     const {payload} = dispatch(setSortBy({sortBy}));
     dispatch(fetchCardList({...currentState.cardPage.options, ...payload}));
@@ -46,9 +61,8 @@ export const CardListComponent = () => {
 
   const _changePage = (newPage) => {
     newPage = newPage % currentState.cardPage.pages;
-    const {payload} = dispatch(changePage({offset: newPage}))
+    const {payload} = dispatch(changePage({offset: newPage}));
     dispatch(fetchCardList({...currentState.cardPage.options, ...payload}))
-
   }
 
   const toggleDropdown = () => {
@@ -58,7 +72,7 @@ export const CardListComponent = () => {
   const formatType = (unformattedType) => {
     if (unformattedType === cardTypes[0] || !cardTypes.includes(unformattedType))
       return "Filter";
-    let type = unformattedType?.toLowerCase().replace("account_", "");
+    let type = unformattedType?.toLowerCase().replace("card_", "");
     type = type.charAt(0).toUpperCase() + type.slice(1);
     return type;
   }
@@ -71,9 +85,9 @@ export const CardListComponent = () => {
         <td><a href={`/cards/${card.id}`}>{ card.id }</a></td>
         <td>{ card.type }</td>
         <td>{ card.lastFour }</td>
-        <td>{ card.created }</td>
-        <td>{ card.activeSince }</td>
-        <td>{ card.expires }</td>
+        <td>{ _convertDate(card.created) }</td>
+        <td>{ _convertDate(card.activatedSince) }</td>
+        <td>{ _convertExpiry(card.expirationDate) }</td>
         <td>{ card.confirmed ? "yes" : "no" }</td>
         <td>{ card.active ? "yes" : "no" }</td>
         <td>{ card.stolen ? "yes" : "no" }</td>

@@ -7,7 +7,7 @@ import { fetchCardList } from "../../services/card-service";
 const cardDefaultState = {
   cardPage: {
     cards: [
-      { id: 1, type: 0, lastFour: "2311", accountId: 1, created: 1546600672000, activeSince: 1546600672000, expires: 1735689600000, pin: "0219", cvv: "288", confirmed: true, active: true, stolen: false }
+      { id: 1, type: 0, lastFour: "2311", accountId: 1, created: 1546600672000, activatedSince: 1546600672000, expirationDate: 1735689600000, confirmed: true, active: true, stolen: false }
     ],
     page: 1,
     pages: 1,
