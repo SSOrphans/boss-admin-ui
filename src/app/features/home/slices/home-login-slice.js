@@ -1,21 +1,27 @@
-import {createSlice} from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { login } from "../../services/login-service";
 
-const initialState =
-  {
-    loginState: false
-  };
+const initialState = {
+  isLoggedIn: false
+};
 
 export const loginSlice = createSlice({
-  name: "loginState",
+  name: "login",
   initialState,
-  reducers: {
-    login(state, action) {
-      state.loginState = true;
-    },
-  },
-  extraReducers: {},
-});
+  reducers: {},
+  extraReducers: {
+    [login.fulfilled]: (state, action) => {
+      const token = action.payload.data.token;
+      if (token !== undefined)
+      {
+        state.isLoggedIn = true;
+        localStorage.setItem("clientPass", token);
+        return;
+      }
 
-export const {login} = loginSlice.actions;
+      state.isLoggedIn = false;
+    }
+  }
+});
 
 export default loginSlice.reducer;
