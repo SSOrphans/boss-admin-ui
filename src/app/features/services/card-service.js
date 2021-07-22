@@ -1,11 +1,10 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const fetchCardList = createAsyncThunk("cards/getList", async () => {
-  console.log("Is called!");
+export const fetchCardList = createAsyncThunk("cards/getList", async (params = {}) => {
   const token = localStorage.getItem("clientPass");
-  const headers = { Authorization: "Bearer " + token };
-  return (await axios.get(`http://localhost:8080/api/v1/cards`, { headers })).data;
+  const headers = { Authorization: "Bearer " + token, 'Content-Type': "application/json" };
+  return (await axios.get(`http://localhost:8080/api/v1/cards`, { params, headers, data: {} })).data;
 });
 
 export const getCardDetail = createAsyncThunk("cards/getCard", async (id) => {

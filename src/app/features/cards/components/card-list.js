@@ -17,12 +17,12 @@ export const CardListComponent = () => {
   ];
 
   useEffect(() => {
-    if (currentState.cardPage.status === "init")
-      dispatch(fetchCardList());
+    if (currentState.cardPage.status !== "init")
+      return;
+    dispatch(fetchCardList());
   });
 
   const _convertDate = (datems) => {
-    console.log(`Date MS: ${datems}`);
     if (datems === undefined)
       return "Invalid";
     const d = new Date(datems).toISOString();
@@ -47,25 +47,28 @@ export const CardListComponent = () => {
   const _setKeyword = (event) => {
     const keyword = event.target.value;
     const {payload} = dispatch(setKeyword({keyword}));
-    dispatch(fetchCardList({...currentState.cardPage.options, ...payload}))
+    dispatch(fetchCardList({...currentState.cardPage.options, ...payload}));
   }
 
   const _setFilter = (filter) => {
     if (filter === cardTypes[0] || !cardTypes.includes(filter))
       filter = "";
     const {payload} = dispatch(setFilter({filter}));
-    dispatch(fetchCardList({...currentState.cardPage.options, ...payload}))
+    dispatch(fetchCardList({...currentState.cardPage.options, ...payload}));
   }
 
   const _setLimit = (limit) => {
-    const {payload} = dispatch(setLimit({limit, offset:0}));
-    dispatch(fetchCardList({...currentState.cardPage.options, ...payload}))
+    const {payload} = dispatch(setLimit({limit, page:0}));
+    dispatch(fetchCardList({...currentState.cardPage.options, ...payload}));
   }
 
   const _changePage = (newPage) => {
-    newPage = newPage % currentState.cardPage.pages;
-    const {payload} = dispatch(changePage({offset: newPage}));
-    dispatch(fetchCardList({...currentState.cardPage.options, ...payload}))
+    const maxPages = currentState.cardPage.pages - 1;
+    if (newPage >= maxPages)
+      newPage = maxPages;
+
+    const {payload} = dispatch(changePage({page: newPage}));
+    dispatch(fetchCardList({...currentState.cardPage.options, ...payload}));
   }
 
   const toggleDropdown = () => {
@@ -89,7 +92,7 @@ export const CardListComponent = () => {
         <td>{ card.type }</td>
         <td>{ card.lastFour }</td>
         <td>{ _convertDate(card.created) }</td>
-        <td>{ _convertDate(card.activeSince) }</td>
+        <td>{ _convertDate(card.activatedSince) }</td>
         <td>{ _convertExpiry(card.expirationDate) }</td>
         <td>{ card.confirmed ? "yes" : "no" }</td>
         <td>{ card.active ? "yes" : "no" }</td>
@@ -128,15 +131,15 @@ export const CardListComponent = () => {
       <Table striped bordered dark>
         <thead>
         <tr>
-          <th onClick={() => _setSortBy("id")}>ID</th>
-          <th onClick={() => _setSortBy("type")}>Type</th>
-          <th onClick={() => _setSortBy("lastFour")}>Last Four</th>
-          <th onClick={() => _setSortBy("created")}>Created</th>
-          <th onClick={() => _setSortBy("activeSince")}>Active Since</th>
-          <th onClick={() => _setSortBy("expires")}>Expires</th>
-          <th onClick={() => _setSortBy("confirmed")}>Confirmed</th>
-          <th onClick={() => _setSortBy("active")}>Active</th>
-          <th onClick={() => _setSortBy("stolen")}>Stolen</th>
+          <th style={{ cursor: "pointer" }} onClick={() => _setSortBy("id")}>ID</th>
+          <th style={{ cursor: "pointer" }} onClick={() => _setSortBy("type")}>Type</th>
+          <th style={{ cursor: "pointer" }} onClick={() => _setSortBy("lastFour")}>Last Four</th>
+          <th style={{ cursor: "pointer" }} onClick={() => _setSortBy("created")}>Created</th>
+          <th style={{ cursor: "pointer" }} onClick={() => _setSortBy("activeSince")}>Active Since</th>
+          <th style={{ cursor: "pointer" }} onClick={() => _setSortBy("expirationDate")}>Expires</th>
+          <th>Confirmed</th>
+          <th>Active</th>
+          <th>Stolen</th>
         </tr>
         </thead>
         <tbody>
@@ -146,11 +149,9 @@ export const CardListComponent = () => {
       <div className="d-flex flex-row flex-wrap pagination-limit">
         <PaginationComponent
           totalPages={currentState.cardPage.pages}
-          currentPage={currentState.cardPage.options.offset}
+          currentPage={currentState.cardPage.page}
           maxSize={10}
-          onPageChanged={(i) => {
-            _changePage(currentState.cardPage.options.offset + i);
-          }}
+          onPageChanged={(i) => _changePage(currentState.cardPage.page + i) }
         />
         <select
           className='custom-select w-auto'
